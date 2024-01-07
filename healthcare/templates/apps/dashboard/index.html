@@ -1,0 +1,176 @@
+{% extends "main.html" %}
+{% load humanize %}
+{% block pageHeader %}
+<div class="page-header">
+    <div class="row">
+        <div class="col-sm-12">
+            <h3 class="page-title">Homepage</h3>
+            <ul class="breadcrumb">
+                <li class="breadcrumb-item"><a href="index.html">Dashboard</a></li>
+                <li class="breadcrumb-item active">Homepage</li>
+            </ul>
+        </div>
+    </div>
+</div>
+{% endblock %}
+
+{% block content %}
+<div class="row">
+   
+    <div class="col-xl-3 col-sm-6 col-12">
+        <div class="card">
+            <div class="card-body">
+                <div class="dash-widget-header">
+                    <span class="dash-widget-icon bg-1">
+                        <i class="fas fa-dollar-sign"></i>
+                    </span>
+                    <div class="dash-count">
+                        <div class="dash-title">Today Sales</div>
+                        <div class="dash-counts">
+                            <p>{{ todaySales.total_amount__sum |floatformat:2|intcomma }} BDT</p>
+                        </div>
+                    </div>
+                </div>
+                <div class="progress progress-sm mt-3">
+                    <div class="progress-bar bg-5" role="progressbar" style="width: 75%" aria-valuenow="75" aria-valuemin="0" aria-valuemax="100"></div>
+                </div>
+                <p class="text-muted mt-3 mb-0"><span class="text-success me-1"><i class="fas fa-info me-1"></i> note:</span> Based on today invoices</p>
+            </div>
+        </div>
+    </div>
+    <div class="col-xl-3 col-sm-6 col-12">
+        <div class="card">
+            <div class="card-body">
+                <div class="dash-widget-header">
+                    <span class="dash-widget-icon bg-1">
+                        <i class="fas fa-dollar-sign"></i>
+                    </span>
+                    <div class="dash-count">
+                        <div class="dash-title">Yesterday Sales</div>
+                        <div class="dash-counts">
+                            <p>{{ yesterdaySales.total_amount__sum |floatformat:2|intcomma }} BDT</p>
+                        </div>
+                    </div>
+                </div>
+                <div class="progress progress-sm mt-3">
+                    <div class="progress-bar bg-5" role="progressbar" style="width: 75%" aria-valuenow="75" aria-valuemin="0" aria-valuemax="100"></div>
+                </div>
+                <p class="text-muted mt-3 mb-0"><span class="text-success me-1"><i class="fas fa-info me-1"></i> note:</span> Based on yesterday invoices</p>
+            </div>
+        </div>
+    </div>
+    <div class="col-xl-3 col-sm-6 col-12">
+        <div class="card">
+            <div class="card-body">
+                <div class="dash-widget-header">
+                    <span class="dash-widget-icon bg-1">
+                        <i class="fas fa-dollar-sign"></i>
+                    </span>
+                    <div class="dash-count">
+                        <div class="dash-title">Amount Due</div>
+                        <div class="dash-counts">
+                            <p>{{ totaldues.total_amount__sum |floatformat:2|intcomma }} BDT</p>
+                        </div>
+                    </div>
+                </div>
+                <div class="progress progress-sm mt-3">
+                    <div class="progress-bar bg-5" role="progressbar" style="width: 75%" aria-valuenow="75" aria-valuemin="0" aria-valuemax="100"></div>
+                </div>
+                <p class="text-muted mt-3 mb-0"><span class="text-success me-1"><i class="fas fa-info me-1"></i> note:</span> Based on unpaid invoices</p>
+            </div>
+        </div>
+    </div>
+    <div class="col-xl-3 col-sm-6 col-12">
+        <div class="card">
+            <div class="card-body">
+                <div class="dash-widget-header">
+                    <span class="dash-widget-icon bg-2">
+                        <i class="fas fa-users"></i>
+                    </span>
+                    <div class="dash-count">
+                        <div class="dash-title">Registered Customers</div>
+                        <div class="dash-counts">
+                            <p>{{ totalcustomers | intcomma}}</p>
+                        </div>
+                    </div>
+                </div>
+                <div class="progress progress-sm mt-3">
+                    <div class="progress-bar bg-6" role="progressbar" style="width: 65%" aria-valuenow="75" aria-valuemin="0" aria-valuemax="100"></div>
+                </div>
+                <p class="text-muted mt-3 mb-0"><span class="text-success me-1"><i class="fas fa-info me-1"></i> note:</span> Based on all active organizations</p>
+            </div>
+        </div>
+    </div>
+    <div class="col-xl-3 col-sm-6 col-12">
+        <div class="card">
+            <div class="card-body">
+                <div class="dash-widget-header">
+                    <span class="dash-widget-icon bg-4">
+                        <i class="fas fa-file-alt"></i>
+                    </span>
+                    <div class="dash-count">
+                        <div class="dash-title">Invoices Unpaid</div>
+                        <div class="dash-counts">
+                            <p>{{ totalunpaidinvoice | intcomma}}</p>
+                        </div>
+                    </div>
+                </div>
+                <div class="progress progress-sm mt-3">
+                    <div class="progress-bar bg-8" role="progressbar" style="width: 85%" aria-valuenow="75" aria-valuemin="0" aria-valuemax="100"></div>
+                </div>
+                <p class="text-muted mt-3 mb-0"><span class="text-success me-1"><i class="fas fa-info me-1"></i> note:</span> total number of unpaid invoices</p>
+            </div>
+        </div>
+    </div>
+    <div class="col-xl-3 col-sm-6 col-12">
+        <div class="card">
+            <div class="card-body">
+                <div class="dash-widget-header">
+                    <span class="dash-widget-icon bg-3">
+                        <i class="fa fa-hand-holding-usd"></i>
+                    </span> 
+                    <div class="dash-count">
+                        <div class="dash-title">Total Sales</div>
+                        <div class="dash-counts">
+                            <p>{{ totalsales | intcomma }}</p>
+                        </div>
+                    </div>
+                </div>
+                <div class="progress progress-sm mt-3">
+                    <div class="progress-bar bg-7" role="progressbar" style="width: 45%" aria-valuenow="75" aria-valuemin="0" aria-valuemax="100"></div>
+                </div>
+                <p class="text-muted mt-3 mb-0"><span class="text-success me-1"><i class="fas fa-info me-1"></i> note: </span> Total number of invoices</p>
+            </div>
+        </div>
+    </div>
+    <div class="col-xl-3 col-sm-6 col-12">
+        <div class="card">
+            <div class="card-body">
+                <div class="dash-widget-header">
+                    <span class="dash-widget-icon bg-5">
+                        <i class="far fa-money-bill-alt"></i>
+                    </span> 
+                    <div class="dash-count">
+                        <div class="dash-title">Total Extra Expenses</div>
+                        <div class="dash-counts">
+                            <p>{{ totalexpenses.cost__sum | intcomma }} BDT</p>
+                        </div>
+                    </div>
+                </div>
+                <div class="progress progress-sm mt-3">
+                    <div class="progress-bar bg-5" role="progressbar" style="width: 45%;" aria-valuenow="75" aria-valuemin="0" aria-valuemax="100"></div>
+                </div>
+                <p class="text-muted mt-3 mb-0"><span class="text-success me-1"><i class="fas fa-info me-1"></i> note: </span> Total amount of expenses</p>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}
+
+{% block custom_script %}
+    <script>
+        function progress_percentage(totalamount, amount){
+            return (amount / totalamount) * 100;
+        }
+    </script>
+{% endblock %}

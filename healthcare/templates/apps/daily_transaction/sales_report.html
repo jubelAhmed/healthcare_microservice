@@ -1,0 +1,342 @@
+{% extends "main.html" %}
+{% load static %}
+
+{% block custom_style %} 
+	<!-- Datatables CSS -->
+	<link rel="stylesheet" href="{% static 'plugins/datatables/datatables.min.css' %}">
+    <link rel="stylesheet" href="{% static 'plugins/select2/css/select2.min.css' %}">
+    <link href="{% static 'plugins/datepicker/src/css/datepicker.css'  %}" rel='stylesheet'>
+ 
+{% endblock custom_style %}
+  
+
+{% block content %}
+
+<div class="col-md-12">
+    <div class="card bg-white p-5" style="font-size: 14px;">
+        <style>
+            
+            table {
+                width: 100%;
+            }
+            td{
+                padding-left: 5px;
+                height: 30px;
+            }
+            
+            table, th, td {
+             
+                border: 3px solid black;
+            }
+            .notestyle{
+                width: 100%;
+                height: 100px;
+                border: 3px solid black;
+            }
+            hr {
+                border: none;
+                height: 3px !important;
+                color: #080808 !important;
+                background-color: #080808 !important;
+                opacity: 1 !important;
+                margin-bottom: 0px;
+                padding-bottom: 0px;
+            }
+        </style>
+        <!-- Report Heading -->
+        <div class="row">
+            <div class="col-md-3">
+                <img src="{% static 'img/logo.png' %}">
+            </div>
+        
+            <div class="col-md-6">
+                <center>
+                    <h3> Intraco CNG Limited </h3>
+                    <h5> (A Sister Concern Of Intraco Group)</h5>
+                    <h4> BRTC Bus Depo, Pallabi, Mirpur 12. </h4>
+                    <h4> Daily Sales Report </h4>
+                </center>
+        
+            </div>
+        
+            <div class="col-md-3">
+                <button class="btn btn-outline-primary" id="pdf_btn"> <i class="fa fa-download"></i> Download/View PDF </a>
+            </div>
+        </div>
+        <!-- Report Head -->
+        <div class="row justify-content-center mt-2">
+    
+            <div class="col-md-2">
+                <div class="form-group">
+                    <label  class="form-label" >Shift:</label>
+                    <select class="select" class="shift" id="sales_shift">
+                        {% for shift in shifts%}
+                        <option value="{{shift.id}}" {% if forloop.counter == 1  %} selected {% endif %} >{{shift.name}}</option>
+                        {% endfor %}
+                    </select>
+                </div>
+            </div>
+            <div class="col-md-2">
+                <div class="form-group">
+                    <label class="form-label">Start Time</label>
+                    <input type="text" value="{{shifts.0.started_time|time:'H:i A'}}" disabled placeholder="Start Time" class="form-control" id="start_time">
+                </div>
+            </div>
+            <div class="col-md-2">
+                <div class="form-group">
+                    <label class="form-label">End Time</label>
+                    <input type="text" value="{{shifts.0.ending_time|time:'H:i A'}}" disabled placeholder="End Time" class="form-control" id="ending_time">
+                </div>
+            </div>
+            <div class="col-md-2">
+                <div class="form-group">
+                    <label class="form-label">Date</label>
+                    <input type="text" id="tranaction_date" class="form-control" placeholder="Date" data-toggle="datepicker">
+   
+                </div>
+            </div>
+            <div class="col-md-2">
+                <div class="mt-4 pt-1">
+                    <button type="button " class="btn btn-info  text-white" id="load_data_btn">Load Data</button>   
+                </div>
+            </div>
+        </div>
+        <!-- <table class="mt-2">
+            <tr style="height:30px;">
+                <td class="px-2"> Start Time: <span id="header-s-time"></span> </td>
+                <td class="px-2"> Stop Time: <span id="header-e-time"></span> </td>
+                <td class="px-2"> Shift: <span id="header-shift"></span> </td>
+                <td class="px-2"> Date:<span id="header-date"></span> </td>
+            </tr>
+        </table> -->
+       
+        
+        <!-- Dispenser -->
+        <table class="mt-3" id="dispenser_reading">
+            <tr style="height: 35px; font-size: bold;background-color: #b0e2ff;">
+                <th colspan="4"> Dispenser Reading: </th>
+            </tr>
+            <tr>    
+                <th> Dispenser </th>
+                <th> Nozzel </th>
+                <th> Total Token </th>
+                <th> Total m3 </th>
+                <th> Total Amount </th>
+            </tr>
+           
+           
+        </table>
+        <!-- Status -->
+        
+        <table class="mt-3">
+            <tr>
+                <td  style="height: 35px; font-size: bold;background-color: #b0e2ff;"> <b>Total Cubic Meter</b> </td>
+                <td id="total_volume"> 0 </td>
+            </tr>
+            <tr>
+                <td  style="height: 35px; font-size: bold;background-color: #b0e2ff;"> <b>Total Cubic Meter Sales Taka</b> </td>
+                <td id="total_amount"> 0 </td>
+            </tr>
+        </table>
+        
+        
+        <table class="mt-3">
+            <tr>
+                <td></td>
+            </tr>
+             
+        </table>
+        
+        <table class="mt-3" style="max-width: 50%">
+            <tr>
+                <td style="height: 35px; font-size: bold;background-color: #b0e2ff;">All Total Token </td>
+                <td id="total_token"> 0 </td>
+            </tr>
+        </table>
+         
+         
+    </div>
+</div>
+
+
+{% endblock %}
+
+
+{% block custom_script %}
+
+<!-- Select2 JS -->
+<script src="{% static 'plugins/select2/js/select2.min.js' %}"></script>
+<script src="https://cdn.jsdelivr.net/npm/axios/dist/axios.min.js"></script>
+<!-- <script src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-datepicker/1.9.0/js/bootstrap-datepicker.min.js" integrity="sha512-T/tUfKSV1bihCnd+MxKD0Hm1uBBroVYBOYSk1knyvQ9VyZJpc/ALb4P0r6ubwVPSGB2GvjeoMAJJImBG12TiaQ==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>  -->
+<script src="{% static 'plugins/datepicker/src/js/datepicker.js' %}"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/moment.js/2.18.1/moment.min.js"></script>
+
+
+<script>
+
+    var today = new Date();
+    var dd = String(today.getDate()).padStart(2, '0');
+    var mm = String(today.getMonth() + 1).padStart(2, '0'); //January is 0!
+    var yyyy = today.getFullYear();    
+
+
+    $(document).ready(function () {
+
+        function getCookie(name) {
+            let cookieValue = null;
+            if (document.cookie && document.cookie !== '') {
+                const cookies = document.cookie.split(';');
+                for (let i = 0; i < cookies.length; i++) {
+                    const cookie = cookies[i].trim();
+                    // Does this cookie string begin with the name we want?
+                    if (cookie.substring(0, name.length + 1) === (name + '=')) {
+                        cookieValue = decodeURIComponent(cookie.substring(name.length + 1));
+                        break;
+                    }
+                }
+            }
+            return cookieValue;
+        }
+
+        $('[data-toggle="datepicker"]').datepicker({
+            format: 'yyyy-mm-dd',
+            date: yyyy + "-" + mm + "-"+dd
+    
+        });
+        // $('[data-toggle="datepicker"]').val(yyyy + "-" + mm + "-"+dd)
+
+        $(document).on('change', '#sales_shift', function () {
+
+            console.log(this.value)
+            // Make a request for a user with a given ID
+            axios.get('/schedule/api/single_shift/' + this.value)
+                .then(function (response) {
+        
+                    console.log(response);
+        
+                    // handle success
+                    //document.getElementById("total_amount").value = response.data.total_amount
+                    document.getElementById("start_time").value = moment.utc( response.data.started_time,'HH:mm').local("Asia/Dhaka").format("hh:mm A"); 
+                    document.getElementById("ending_time").value = moment.utc( response.data.ending_time,'HH:mm').local("Asia/Dhaka").format("hh:mm A");
+                    // let local = moment.utc(utcTime,'HH:mm').local().format("hh:mm A");
+
+                    // document.getElementById("status").innerText = response.data.status
+                    // document.getElementById("status").classList.remove("d-none");
+        
+                })
+                .catch(function (error) {
+                    // handle error
+                    console.log(error);
+                })
+                .then(function () {
+                    // always executed
+                });
+        
+        })
+
+        $(document).on('click', '#pdf_btn', function () {
+            // target="_blank" href="{% url 'pdfdailytrnx' %}"
+            sales_shift = document.getElementById("sales_shift").value
+            tranaction_date = document.getElementById("tranaction_date").value
+
+            if(!sales_shift || !tranaction_date){
+                console.log("Please select shift and date")
+                window.alert("Please select shift and date");
+                return
+            }
+
+            var url = window.location.origin
+            var url = "/reports/pdf/daily-sales-report"
+            url += "/"+sales_shift
+            url += "/"+tranaction_date
+
+
+            window.open(url, '_blank');
+
+            // http://0.0.0.0:8000/reports/pdf/daily-sales-report/1/2022-02-13/
+
+
+        })
+            
+        $(document).on('click', '#load_data_btn', function () {
+
+            sales_shift = document.getElementById("sales_shift").value
+            tranaction_date = document.getElementById("tranaction_date").value
+
+            if(!sales_shift || !tranaction_date){
+                console.log("Please select shift and date")
+                window.alert("Please select shift and date");
+                return
+            }
+
+            const csrf_token = getCookie('csrftoken');
+            $.ajax({
+                type: 'POST',
+                headers: {'X-CSRFToken': csrf_token},
+                url: "/get-sales-report-data/",
+                data: {
+                    'shift': sales_shift,
+                    'date': tranaction_date
+                   
+                },
+                success: function (response) {
+                    // console.log(response);
+                    var total_cubic_meter = 0
+                    var all_total_token = 0
+                    var all_total_sales_taka = 0
+                    
+                    document.querySelectorAll('.new_added').forEach(e => e.remove());
+                    var str = ""
+                    for(var i=0;i<response.length;i++)
+                    {
+                        
+                        t_volume = response[i].transaction.total_volume != null ? parseFloat(response[i].transaction.total_volume).toFixed(2) : 0
+                        t_amount = response[i].transaction.all_total_amount != null ? parseFloat(response[i].transaction.all_total_amount).toFixed(2) : 0
+                        total_cubic_meter  += t_volume
+                        all_total_sales_taka += t_amount
+                        all_total_token += response[i].transaction.total_token
+                        str+="<tr class='new_added'>";
+                        str+="<td>"+response[i].dispenser_id+"</td>";
+                        str+="<td>"+response[i].nozzle_id+"</td>";
+                        str+="<td>"+response[i].transaction.total_token+"</td>";
+                        str+="<td>"+ t_volume +"</td>";
+                        str+="<td>"+t_amount+"</td>";
+                      
+                        str+="</tr>";
+                    }
+                    var result = ""
+                    result+="<tr class='new_added'>";
+                    result+="<td colspan='3'>"+"Total"+"</td>";
+                       
+                    result+="<td>"+parseFloat(total_cubic_meter).toFixed(2)+"</td>";
+                    result+="</tr>";
+                 
+                     $('#dispenser_reading').append(str);
+                     $('#dispenser_reading').append(result);
+                    
+                     document.getElementById("total_token").innerText = all_total_token;
+                     document.getElementById("total_amount").innerText = parseFloat(all_total_sales_taka).toFixed(2);
+                     document.getElementById("total_volume").innerText = parseFloat(total_cubic_meter).toFixed(2);
+                    
+                },
+                error: function (response) {
+                    // alert the error if any error occured
+                    alert(response['msg'])
+
+                    console.log(response);
+                }
+
+            });
+
+            })
+    })
+   
+
+
+
+</script>
+
+{% endblock custom_script %}
+
+
+		

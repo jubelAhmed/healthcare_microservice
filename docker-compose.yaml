@@ -1,0 +1,85 @@
+services:
+  postgres:
+    image: postgres:latest
+    environment:
+      POSTGRES_DB: healthcare_management_service
+      POSTGRES_USER: admin
+      POSTGRES_PASSWORD: admin@123
+    ports:
+      - "5434:5432"
+    volumes:
+      - pgdata:/var/lib/postgresql/data
+    networks:
+      app-network:
+        ipv4_address: 192.168.32.100
+
+  web: 
+    container_name: web
+    build:
+      context: healthcare
+      dockerfile: Dockerfile
+    ports:
+      - "8001:8001"
+    volumes:
+      - ./healthcare:/app 
+    networks:
+      app-network:
+        ipv4_address: 192.168.32.3  # Adjust the IP address as needed
+    command: ["runserver", "0.0.0.0:8001"]
+
+  prescription_service: 
+    container_name: prescription_service
+    build:
+      context: prescription_service
+      dockerfile: Dockerfile
+    ports:
+      - "8005:8005"
+    volumes:
+      - ./prescription_service:/app 
+    networks:
+      app-network:
+        ipv4_address: 192.168.32.4  # Adjust the IP address as needed
+    command: ["runserver", "0.0.0.0:8005"]
+  # payments_service: 
+  #   build:
+  #     context: payment_service
+  #     dockerfile: Dockerfile
+  #   ports:
+  #     - "8002:8002"
+  #   volumes:
+  #     - ./payment_service:/app 
+  #   networks:
+  #     - app-network
+  # auth_service: 
+  #   build:
+  #     context: auth_service
+  #     dockerfile: Dockerfile
+  #   ports:
+  #     - "8003:8003"
+  #   volumes:
+  #     - ./auth_service:/auth_app 
+  #   networks:
+  #     app-network:
+  #       ipv4_address: 192.168.32.6  # Adjust the IP address as needed
+  #   command: ["runserver", "0.0.0.0:8005"]
+  # appointment_service: 
+  #   build:
+  #     context: appointment_service
+  #     dockerfile: Dockerfile
+  #   ports:
+  #     - "8004:8004"
+  #   volumes:
+  #     - ./appointment_service:/app 
+  #   networks:
+  #     - app-network
+
+networks:
+  app-network:
+    driver: bridge
+    ipam:
+      driver: default
+      config:
+        - subnet: 192.168.32.0/24
+
+volumes:
+  pgdata:

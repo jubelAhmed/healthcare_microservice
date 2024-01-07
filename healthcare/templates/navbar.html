@@ -1,0 +1,120 @@
+{% load static %}
+<div class="header">
+			
+    <!-- Logo -->
+    <div class="header-left">
+        <a href="index.html" class="logo">
+            <img src='{% static "img/logo.png" %}' alt="Logo">
+        </a>
+        <a href="index.html" class="logo logo-small">
+            <img src='{% static "img/logo-small.png" %}' alt="Logo" width="30" height="30">
+        </a>
+    </div>
+    <!-- /Logo -->
+    
+    <!-- Sidebar Toggle -->
+    <a href="javascript:void(0);" id="toggle_btn">
+        <i class="fas fa-bars"></i>
+    </a>
+    <!-- /Sidebar Toggle -->
+    
+    <!-- Search -->
+    <div class="top-nav-search">
+        <form>
+            <input type="text" class="form-control" placeholder="Search here">
+            <button class="btn" type="submit"><i class="fas fa-search"></i></button>
+        </form>
+    </div>
+    <!-- /Search -->
+    
+    <!-- Mobile Menu Toggle -->
+    <a class="mobile_btn" id="mobile_btn">
+        <i class="fas fa-bars"></i>
+    </a>
+    <!-- /Mobile Menu Toggle -->
+    
+    <!-- Header Menu -->
+    <ul class="nav nav-tabs user-menu">
+        <!-- Flag -->
+        <li class="nav-item dropdown has-arrow flag-nav">
+            <a class="nav-link dropdown-toggle" data-bs-toggle="dropdown" href="#" role="button">
+                <img src="{% static 'img/flags/us.png' %}" alt="" height="20"> <span>English</span>
+            </a>
+            <div class="dropdown-menu dropdown-menu-right">
+                <a href="javascript:void(0);" class="dropdown-item">
+                    <img src="{% static 'img/flags/us.png' %}" alt="" height="16"> English
+                </a>
+                {% comment %} <a href="javascript:void(0);" class="dropdown-item">
+                    <img src="{% static 'img/flags/fr.png' %}" alt="" height="16"> Bangla
+                </a> {% endcomment %}
+                
+            </div>
+        </li>
+        <!-- /Flag -->
+        
+        <!-- Notifications -->
+        <li class="nav-item dropdown">
+            <a href="#" class="dropdown-toggle nav-link" data-bs-toggle="dropdown">
+                <i data-feather="bell"></i> 
+                {% comment %} <span class="badge rounded-pill">1</span> {% endcomment %}
+            </a>
+            <div class="dropdown-menu notifications">
+                <div class="topnav-dropdown-header">
+                    <span class="notification-title">Notifications</span>
+                    <a href="javascript:void(0)" class="clear-noti"> Clear All</a>
+                </div>
+                <div class="noti-content">
+                    
+                    <ul class="notification-list">
+                        <li class="notification-message"> 
+                            <div class="media d-flex">
+                                <p class="noti-details p-2"><span class="noti-title">There are no notification available</span></p>
+                            </div>
+                        </li>
+                        <li class="notification-message">
+                            <a href="activities.html">
+                                {% comment %} <div class="media d-flex">
+                                    <div class="avatar avatar-sm">
+                                        <span class="avatar-title rounded-circle bg-primary-light"><i class="far fa-user"></i></span>
+                                    </div>
+                                    <div class="media-body">
+                                        <p class="noti-details"><span class="noti-title">New user registered</span></p>
+                                        <p class="noti-time"><span class="notification-time">8 mins ago</span></p>
+                                    </div>
+                                </div> {% endcomment %}
+                                
+
+                            </a>
+                        </li>
+
+                      
+                    </ul>
+                </div>
+                <div class="topnav-dropdown-footer">
+                    <a href="activities.html">View all Notifications</a>
+                </div>
+            </div>
+        </li>
+        <!-- /Notifications -->
+        
+        <!-- User Menu -->
+        <li class="nav-item dropdown has-arrow main-drop">
+            <a href="#" class="dropdown-toggle nav-link" data-bs-toggle="dropdown">
+                {% comment %} <span class="user-img">
+                    <img src="{% static 'img/profiles/avatar-01.jpg' %} " alt="">
+                    <span class="status online"></span>
+                </span> {% endcomment %}
+                <span>{{ user.get_username|title }}</span>
+            </a>
+            <div class="dropdown-menu">
+                <a class="dropdown-item" href="#"><i data-feather="user" class="me-1"></i> Profile</a>
+                {% comment %} <a class="dropdown-item" href="#"><i data-feather="settings" class="me-1"></i> Settings</a> {% endcomment %}
+                <a class="dropdown-item" href="{% url 'logout' %}"><i data-feather="log-out" class="me-1"></i> Logout</a> 
+            </div>
+        </li>
+        <!-- /User Menu -->
+        
+    </ul>
+    <!-- /Header Menu -->
+    
+</div>

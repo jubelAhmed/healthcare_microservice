@@ -1,0 +1,32 @@
+{% extends "admin/base.html" %}
+
+{% comment %} {% load i18n  eatn_tags static %} {% endcomment %}
+
+{% load i18n %}
+
+{% load static %}
+
+ 
+
+{% block title %}{{ title }} |  <span class="sitetitlename"> {% trans "INTRACO | Super Admin " %}</span>{% endblock %}
+
+{% block extrastyle %}
+
+    <link rel="stylesheet" type="text/css" href="{% static 'admin/admin_color.css' %}"/>
+
+{% endblock %}
+
+ 
+
+{% block branding %}
+
+ <h1 id="site-name" class="sitetitlename"><img src="{% static 'img/logo.png' %}" style="width:50px; padding:left; margin-right:10px;" /><span style="color:black; font-wight:bold;"> Intraco Super Admin</span></h1>
+
+{% endblock %}
+
+
+
+ 
+
+{% block nav-global %}{% endblock %}
+

@@ -1,0 +1,282 @@
+{% extends "main.html" %}
+{% load static %}
+
+{% block custom_style %} 
+	<!-- Datatables CSS -->
+	<link rel="stylesheet" href="{% static 'plugins/datatables/datatables.min.css' %}">
+    <link rel="stylesheet" href="{% static 'plugins/select2/css/select2.min.css' %}">
+ 
+{% endblock custom_style %}
+ 
+
+
+{% block pageHeader %}
+<div class="page-header">
+    <div class="row align-items-center">
+        <div class="col">
+            <h3 class="page-title">Expenses</h3>
+            <ul class="breadcrumb">
+                <li class="breadcrumb-item"><a href="index.html">Dashboard</a>
+                </li>
+                <li class="breadcrumb-item active">Expenses</li>
+            </ul>
+        </div>
+    </div>
+</div>
+{% endblock %}
+
+{% block content %}
+
+<div class="col-md-12">
+    <div class="card bg-white">
+        
+        <div class="card-body">
+            <ul class="nav nav-tabs nav-tabs-solid nav-tabs-rounded">
+                <li class="nav-item"><a class="nav-link active" href="#solid-rounded-tab1" data-bs-toggle="tab">All Expenses</a></li>
+                <li class="nav-item"><a class="nav-link" href="#solid-rounded-tab2" data-bs-toggle="tab">Add Expenses</a></li>
+            </ul>
+            <div class="tab-content">
+                <div class="tab-pane show active" id="solid-rounded-tab1">
+                    {% comment %} All Expenses list {% endcomment %}
+                    <div class="card">
+                         
+                        <div class="card-body">
+                            <div class="table-responsive">
+                                <table class="table table-center table-hover invoice_table">
+                                    <thead>
+                                        <tr>
+                                            <th>Title</th>
+                                            <th>Cost</th>
+                                            <th>Description</th>
+                                            <th>Cost By </th>
+                                            <th> Added By </th>
+                                            <th> Time </th>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                        {% for expense in expenses %}
+                                            <tr>
+                                                <td>{{ expense.title }}</td>
+                                                <td>{{ expense.cost }} TK</td>
+                                                <td>{{ expense.description }}</td>
+                                                <td> {{ expense.expense_for.full_name }} - {{ expense.expense_for.designation }} </td>
+                                                <td> {{ expense.added_by.full_name }} - {{ expense.added_by.designation }}  </td>
+                                                <td> {{ expense.created_at }} </td>
+                                            </tr>
+                                        {% endfor %}
+                                    </tbody>
+                                </table>
+                            </div>
+                        </div>
+                    </div>
+                    {% if totalexpenses > 10 %}
+                    <div>
+                        <ul class="pagination mb-4">
+                            {% if expenses.has_previous %}
+                            <li class="page-item">
+                                <a class="page-link" href="?page={{ expenses.previous_page_number }}" tabindex="-1"> « Previous</a>
+                            </li>
+                                {% if expenses.number > 3 %}
+                                    <li class="page-item"><a class="page-link" href="?page=1">1</a></li>
+                                    {% if expenses.number > 4 %}
+                                    <li class="page-item">
+                                        <a class="page-link" href="">...</a>
+                                     </li>
+                                    {% endif %}
+                                {% endif %}
+                            {% endif %}
+                            
+                    
+                            {% for num in expenses.paginator.page_range %}
+                                {% if expenses.number == num %}
+                                    <li class="page-item"><a class="page-link" href="?page={{ num }}">{{ num }}</a></li>
+                                    
+                                {% elif num > expenses.number|add:'-3' and num < expenses.number|add:'3' %}
+                                    <li class="page-item"><a class="page-link" href="?page={{ num }}">{{ num }}</a></li>
+                                {% endif %}
+                    
+                            {% endfor %}
+                    
+                    
+                            {% if expenses.has_next %}
+                            {% if expenses.number < expenses.paginator.num_pages|add:'-3' %}
+                              <li class="page-item">
+                                <a class="page-link" href="">...</a>
+                             </li>
+                              <li class="page-item"><a class="page-link" href="?page={{ expenses.paginator.num_pages }}">{{ expenses.paginator.num_pages }}</a></li>
+                            {% elif expenses.number < expenses.paginator.num_pages|add:'-2' %}
+                              <li class="page-item"><a class="page-link" href="?page={{ expenses.paginator.num_pages }}">{{ expenses.paginator.num_pages }}</a></li>
+                            {% endif %}
+                            <li class="page-item">
+                                <a class="page-link" href="?page={{ expenses.next_page_number }}">Next Page »</a>
+                            </li>
+                             
+                          {% endif %} 
+                        </ul>
+                    </div>
+                    {% endif %}
+                </div>
+                {% comment %} Add Expense {% endcomment %}
+                <div class="tab-pane" id="solid-rounded-tab2">
+                    <div class="card">
+                        <div class="card-header">
+                            <h5 class="card-title">Add New Expense</h5>
+                            {{ msg }}
+                        </div>
+                        <div class="card-body">
+                            <form method="POST" action="{% url 'expense' %}">
+                                {% csrf_token %}
+                                <div class="row">
+                                    
+                                    <div class="col-lg-6">
+
+                                        <div class="form-group row">
+                                            <label class="col-form-label col-lg-2">Title</label>
+                                            <div class="col-lg-10">
+                                                <div class="input-group">
+                                                    <input style="font-size:18px;" type="text" name="costtitle" class="form-control" placeholder="title" aria-label="title" required>
+                                                </div>
+                                            </div>
+                                        </div>
+
+                                        <div class="form-group row">
+                                            <label class="col-form-label col-lg-2">Note</label>
+                                            <div class="col-lg-10">
+                                                <textarea style="font-size:18px;" rows="5" cols="5" class="form-control" name="costdesc" placeholder="Enter text here"></textarea>
+                                            </div>
+                                        </div>
+                                        
+                                    </div>
+                                    <div class="col-lg-6">
+                                        <div class="form-group row">
+                                            <label class="col-form-label col-lg-2">Expense by (Employee)</label>
+                                            <div class="col-lg-10">
+                                                <select class="form-control select2" name="cost-by" id="expense_by_employees" required="true">
+                                                    <option valu="nothing" id="nothing">--- Select an Employee ---</option>
+                                                    {% for employee in employees %}
+                                                        <option style="font-size:18px;" value="{{employee.id}}">{{ employee.full_name }} - {{ employee.designation}}</option>
+                                                    {% endfor %}
+                                                </select>
+                                            </div>
+                                        </div>
+
+                                        <div class="form-group row">
+                                            <label class="col-form-label col-lg-2">Amount</label>
+                                            <div class="col-lg-10">
+                                                <div class="input-group">
+                                                    <span class="input-group-text">TK</span>
+                                                    <input style="font-size:18px;" type="number" class="form-control" name="costamount" aria-label="Amount" required>
+                                                     
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                                
+                                <div class="form-group row mb-0 text-end">
+                                    <div class="col-lg-12">
+                                        <button id="exp_save_button" style="display:none;" type="submit" class="btn btn-outline-primary"><i class="fa fa-check"> </i> Save Expense</button>
+                                    </div>
+                                   
+                                </div>
+                                <div class="form-group row mb-0 text-center">
+                                    <div class="alert alert-warning alert-dismissible fade show" id="exp_info_text" role="alert">
+										<strong>Hi!</strong> Select Expense By Employee, title and amount
+									</div>
+                                </div>
+                            </form>
+                        </div>
+                    </div>
+                </div>
+                
+            </div>
+        </div>
+    </div>
+</div>
+
+
+{% endblock %}
+
+ 
+{% block custom_script %}
+<!-- Select2 JS -->
+<script src="{% static 'plugins/select2/js/select2.min.js' %}"></script>
+<script src="https://cdn.jsdelivr.net/npm/axios/dist/axios.min.js"></script>
+
+<script>
+    function getCookie(name) {
+        let cookieValue = null;
+        if (document.cookie && document.cookie !== '') {
+            const cookies = document.cookie.split(';');
+            for (let i = 0; i < cookies.length; i++) {
+                const cookie = cookies[i].trim();
+                // Does this cookie string begin with the name we want?
+                if (cookie.substring(0, name.length + 1) === (name + '=')) {
+                    cookieValue = decodeURIComponent(cookie.substring(name.length + 1));
+                    break;
+                }
+            }
+        }
+        return cookieValue;
+    }
+
+    // Inputs
+    let title = $("#costtitle").val()
+    let expense_by = $("#expense_by_employees").val()
+    let description = $("#costdesc").val()
+    let price = $("#costamount").val()
+
+    // Initializing select 2
+    $("#expense_by_employees").select2()
+
+    $('#expense_by_employees').on('select2:select', function (e) {
+        var data = e.params.data;
+        if(data.id == '--- Select an Employee ---'){
+            $("#exp_info_text").show()
+            $("#exp_save_button").hide()
+        }else{
+            console.log("correct Selection : " +  data.id)
+            $("#exp_info_text").hide()
+            $("#exp_save_button").css('display', '');
+            
+        }
+    });
+    
+ 
+
+
+    // Save Data 
+    /*
+    const csrf_token = getCookie('csrftoken');
+    $.ajax({
+        type: 'POST',
+        headers: {'X-CSRFToken': csrf_token},
+        url: "/dashboard/customer/payment/invoice/",
+        data: {
+            'title': invoice_id,
+            'description': vehicle_number,
+            'expense_by':is_possible_to_pay,
+            'amount': cash_checkbox,
+        },
+        success: function (response) {
+            console.log(response);
+            if (response['error'] == 'true') {
+                window.alert(response['msg']);
+            }
+        },
+        error: function (response) {
+            // alert the error if any error occured
+            alert(response['msg'])
+
+            console.log(response);
+        }
+
+    });*/
+    
+</script>
+
+
+
+{% endblock %}
+
+		

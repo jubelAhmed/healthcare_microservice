@@ -1,0 +1,78 @@
+<!-- frontend_app/templates/home.html -->
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+    <title>Home</title>
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
+</head>
+<body class="bg-light">
+
+<div class="container mt-5 text-center"> <!-- Added text-center class here -->
+    <h2 class="" style="color:#7638ff">Welcome to the Healthcare Application</h2>
+    {% comment %} <a href="{% url 'logout' %}" class="btn btn-secondary">Logout</a>
+    <a href="{% url 'profile' %}" class="btn btn-primary">Profile</a> {% endcomment %}
+</div>
+
+<div class="container mt-4 "> <!-- Added text-center class here -->
+    <div class="row">
+        {% comment %} <div class="col-md-6">
+            <div class="card p-3">
+                <h2 class="text-center mb-4">Register</h2>
+                <!-- Add your registration button or form here -->
+            </div>
+        </div> {% endcomment %}
+        <div class="col-md-3"> </div>
+        <div class="col-md-6">
+            {% block content %}
+                <div class="card p-3">
+                    <h2 class="text-center mb-4">Log In</h2>
+                    <form method="post" action="{% url 'login' %}">
+                        {% csrf_token %}
+                        <div class="form-group">
+                            <label for="email">Email:</label>
+                            <input
+                              type="email"
+                              class="form-control"
+                              id="email"
+                              aria-describedby="emailHelp"
+                              placeholder="Enter email"
+                              name="email"
+                              value=""
+                            />
+                            <small id="emailHelp" class="form-text text-muted"
+                              >We'll never share your email with anyone else.</small
+                            >
+                        </div>
+                        <div class="form-group">
+                            <label for="password">Password</label>
+                            <input
+                              type="password"
+                              class="form-control"
+                              id="password"
+                              placeholder="Password"
+                              name="password"
+                              value=""
+                            />
+                        </div>
+                        <button type="submit" class="btn btn-primary btn-block" style="background-color:#7638ff">Login</button>
+                    </form>
+
+                    <div class="mt-3 text-center">
+                        <p>If you are not registered yet, Please Register  <a href="{% url 'register' %}" class="btn btn-sm btn-success mr-2">Register</a></p>
+                       
+                        {% comment %} <a href="#" class="btn btn-md btn-primary">Patient</a> {% endcomment %}
+                    </div>
+                </div>
+            {% endblock %}
+        </div>
+        <div class="col-md-3"> </div>
+    </div>
+</div>
+
+<script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.0.7/dist/umd/popper.min.js"></script>
+<script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
+</body>
+</html>

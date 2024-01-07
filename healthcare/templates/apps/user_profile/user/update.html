@@ -1,0 +1,163 @@
+{% extends "main.html" %}
+{% load static %}
+
+{% block custom_style %}
+
+<!-- Select2 CSS -->
+<link rel="stylesheet" href="{% static 'plugins/select2/css/select2.min.css' %}">
+
+
+{% endblock custom_style %}
+
+{% block pageHeader %}
+<!-- Page Header -->
+<div class="page-header">
+    <div class="row">
+        <div class="col-sm-12">
+            <h3 class="page-title">Users</h3>
+            <ul class="breadcrumb">
+                <li class="breadcrumb-item"><a href="index.html">Dashboard</a></li>
+                <li class="breadcrumb-item"><a href="customers.html">Users</a></li>
+                <li class="breadcrumb-item active">Add User</li>
+            </ul>
+        </div>
+    </div>
+</div>
+<!-- /Page Header -->
+{% endblock %}
+
+
+{% block content %}
+
+<div>
+    {% if errors %}
+    {% for error in errors %}
+    <div id="message" class="container">
+        <div class="alert alert-danger alert-dismissible text-center fade show" role="alert">
+            {{ error|title }}
+            <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+        </div>
+    </div>
+    {% endfor %}
+    {% endif %}
+</div>
+
+<div class="card">
+    <div class="card-body">
+        <h4 class="card-title">Basic Info</h4>
+        <form action="{% url 'user_update' employee.id %}" method="POST">
+            {% csrf_token %}
+
+            <div class="row">
+
+
+
+                <div class="col-md-6">
+
+
+                    <div class="form-group">
+                        <label>Username</label>
+                        <input type="text" name="username" value="{{employee.user.username}}" class="form-control">
+                    </div>
+                    <div class="form-group py-2">
+                        <label>User Type</label>
+                        <select class="select " name="usertype">
+
+                            <option value="ADMIN" >admin</option>
+
+                            <option value="MANAGER">manager</option>
+
+                            <option value="DIRECTOR">director</option>
+
+                            <option value="STAFF">staff</option>
+
+
+                        </select>
+                    </div>
+                    <input type="text" name="update_type" value="USER_INFO_UPDATE" class="d-none">
+
+
+                    <div style="">
+                        <button type="submit" class="btn btn-primary">Update User Info</button>
+
+
+                    </div>
+
+                </div>
+                <div class="col-md-6">
+                    <div class="row">
+                        <div class="col-md-8">
+                            <div class="form-group">
+                                <label>Employee</label>
+                                <input type="text" value="{{employee.full_name}}" class="form-control" disabled>
+                            </div>
+                        </div>
+                        <div class="col-md-4 mt-3 pt-2">
+                            <a href="{% url 'employee_update' employee.id %}" class="btn btn-sm btn-outline-info me-1 ">
+                                <i class="fas fa-update"> Edit Employee</i>
+                            </a>
+
+                        </div>
+                    </div>
+                </div>
+
+            </div>
+        </form>
+
+
+            <h4 class="card-title mt-4">Users Info</h4>
+        <form action="{% url 'user_update' employee.id %}" method="POST">
+            {% csrf_token %}
+
+            <div class="row">
+
+
+                <div class="col-md-6">
+
+                    <div class="form-group">
+                        <label>Old Password</label>
+                        <input type="password" name="old_password" class="form-control">
+                    </div>
+                    <div class="form-group">
+                        <label>New Password</label>
+                        <input type="password" name="new_password1" class="form-control">
+                    </div>
+
+                    <div class="form-group">
+                        <label>New Confirm password</label>
+                        <input type="password" name="new_password2" class="form-control">
+                    </div>
+
+                    <input type="text" name="update_type" value="USER_PASSWORD_UPDATE" class="d-none">
+
+
+
+
+                </div>
+            </div>
+
+            <div class="text-start mt-4">
+                <button type="submit" class="btn btn-primary">Update Password</button>
+                <a href=" {% url 'user' %} ">
+                    <button type="button" class="btn btn-danger"> Cancel</button>
+                </a>
+
+
+            </div>
+        </form>
+
+
+    </div>
+</div>
+{% endblock %}
+
+{% block custom_script %}
+
+<!-- Select2 JS -->
+<script src="{% static 'plugins/select2/js/select2.min.js' %}"></script>
+
+{% endblock custom_script %}
+
+
+</body>
+</html>

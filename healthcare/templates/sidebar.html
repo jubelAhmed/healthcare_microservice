@@ -1,0 +1,39 @@
+<style>
+ .sidebar-menu ul {
+     padding-left: 11px !important;
+     padding-right: 11px !important;
+ }
+ .sidebar-menu ul ul a {
+    border-left: 4px solid #7638ff;
+    margin-top: 5px;
+    /* border-radius: 50px; */
+
+}
+ .sidebar-menu ul ul a:hover{
+     
+ }
+</style>
+<div class="sidebar" id="sidebar">
+    <div class="sidebar-inner slimscroll">
+        <div id="sidebar-menu" class="sidebar-menu">
+            <ul>
+                <li class="menu-title"><span>Healthcare</span></li>
+                <li class="{% if request.path == '/' %}active{% endif %}">
+                    <a style="background-color:#7638ff;color:white;font-size:16px;border-radius:25px;" href="{% url 'home' %}"><span>Dashboard</span></a>
+                </li>
+                <li class="{% if request.path == '/prescription/' %}active{% endif %}">
+                    <a style="background-color:#7638ff;color:white;font-size:16px;border-radius:25px;" href="{% url 'prescription' %}"><i class="fa fa-apple"></i> <span> Make Appointment</span> <span class="menu-arrow1"></span></a>
+                </li>
+                <li class="{% if request.path == '/view-appointments/' %}active{% endif %}">
+                    <a style="background-color:#7638ff;color:white;font-size:16px;border-radius:25px;" href="{% url 'prescription' %}"><i class="fa fa-clipboard-prescription"></i> <span> View Appointments</span> <span class="menu-arrow1"></span></a>
+                </li>
+                <li class="{% if request.path == '/create-prescription/' %}active{% endif %}">
+                    <a style="background-color:#7638ff;color:white;font-size:16px;border-radius:25px;" href="{% url 'prescription' %}"><i class="fa fa-clipboard-prescription"></i> <span> Create Prescription</span> <span class="menu-arrow1"></span></a>
+                </li>
+                <li class="{% if request.path == '/view-prescription/' %}active{% endif %}">
+                    <a style="background-color:#7638ff;color:white;font-size:16px;border-radius:25px;" href="{% url 'prescription' %}"><i class="fa fa-clipboard-prescription"></i> <span> View Prescription</span> <span class="menu-arrow1"></span></a>
+                </li>   
+            </ul>
+        </div>
+    </div>
+</div>

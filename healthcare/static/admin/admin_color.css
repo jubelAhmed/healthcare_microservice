@@ -1,0 +1,482 @@
+:root {
+    --primary: #d4cbcb;
+    --secondary: #1a1a1a;
+    --accent: #0b1ae6;
+    --primary-fg: #fff;
+    --header-color: #ccffe8;
+    --darkened-bg: #f1efef;
+  }
+/* width */
+::-webkit-scrollbar {
+    width: 2px;
+}
+/* Track */
+::-webkit-scrollbar-track {
+    background: #f1f1f1; 
+}
+
+/* Handle */
+::-webkit-scrollbar-thumb {
+    background: #f8f9fa; 
+}
+
+/* Handle on hover */
+::-webkit-scrollbar-thumb:hover {
+    background: #555; 
+}
+
+#header{
+    background: #fff;
+    box-shadow: 0 0 13px 0 rgb(82 63 105 / 30%);
+    border-radius: 0 0 20px 20px;
+    height: 60px;
+    color: black;
+}
+#branding a {
+    color: black;
+}
+a {
+    color: black;
+}
+body{
+    background-color: #f8f9fa;
+    color: black;
+}
+#header a:link, #header a:visited {
+    color: black;
+}
+
+.logoutbutton{
+    color:red;
+}
+
+.app-account .module{
+    box-shadow: 0 0 13px 0 rgb(82 63 105 / 10%);
+}
+
+ 
+table caption {
+    text-align: center !important;
+    font-weight: bold !important;
+    font-size: 18px !important;
+    padding-top:5px !important;
+    background-color: #2596be !important;
+    border-radius: 25px;
+}
+
+#recent-actions-module{
+    background-color: white !important;
+    box-shadow: 0 0 13px 0 rgb(82 63 105 / 10%);
+    border-radius: 25px;
+}
+
+#content-related{
+    background-color: #f8f9fa;
+}
+.breadcrumbs{
+    padding-top: 25px !important;
+    text-align: center !important;
+    font-size: 18px;
+    font-weight: bold;
+    background-color:#2596be !important;
+    height: 40px;
+}
+#nav-filter{
+    height: 40px;
+    border-radius: 25px;
+    border-color: #2596be !important;
+}
+
+.object-tools a:link, .object-tools a:visited {
+    background-color: #2596be !important;
+}
+
+/* #branding h1, #branding h1 a:link, #branding h1 a:visited {
+
+    color: #fff;
+
+}
+
+#branding h1{
+
+    font-size: x-large;
+
+}
+
+h1{
+
+    color: white;    
+
+}
+
+ 
+
+body{
+
+     background: black;
+
+}
+
+#header {
+
+    background:crimson;
+
+    color: #fff;
+
+    height: 78px
+
+    
+
+}
+
+#header a:link, #header a:visited {
+
+    color: #fff;
+
+}
+
+ 
+
+#header a:hover {
+
+    color: #fff;
+
+}
+
+ 
+
+div.breadcrumbs {
+
+     //color: #c4dce8 
+
+    background: firebrick;
+
+}
+
+div.breadcrumbs a.active {
+
+    color: #c4dce8;
+
+!important;
+
+    font-weight: 300;
+
+}
+
+ 
+
+div.breadcrumbs a:focus, div.breadcrumbs a:hover {
+
+    color: #c4dce8;
+
+!important;
+
+    font-weight: 300;
+
+}
+
+ 
+
+.select2-container--admin-autocomplete .select2-results__option--highlighted[aria-selected] {
+
+    background-color: #292D32;
+
+}
+
+ 
+
+.paginator a:link, .paginator a:visited {
+
+    background: #292D32;
+
+}
+
+ 
+
+.button, input[type=submit], input[type=button], .submit-row input, a.button {
+
+    background: #78afc8;
+
+}
+
+.button:hover, input[type=submit]:hover, input[type=button]:hover {
+
+    background: #878787;
+
+}
+
+.module caption{
+
+    background: crimson;
+
+    
+
+}
+
+.module p{
+
+    background: crimson;
+
+    
+
+}
+
+.module h2, .inline-group h2 {
+
+    background: #78afc8;
+
+}
+
+#user-tools a:focus, #user-tools a:hover {
+
+    border: 0;
+
+    color: #ddd;
+
+}
+
+ 
+
+.selector-chosen h2 {
+
+    background: #78afc8 !important;
+
+}
+
+ 
+
+.calendar td.selected a {
+
+    background: #78afc8 !important;
+
+}
+
+ 
+
+.calendar td a:focus, .timelist a:focus,
+
+.calendar td a:hover, .timelist a:hover {
+
+    background: #78afc8 !important;
+
+}
+
+ 
+
+#changelist-filter li.selected a {
+
+    color: #444;
+
+}
+
+ 
+
+fieldset.collapsed .collapse-toggle {
+
+    color: #444;
+
+}
+
+ 
+
+a:link, a:visited {
+
+    color: #777;
+
+}
+
+ 
+
+a:focus, a:hover {
+
+    color: #999;
+
+}
+
+ 
+
+table thead th.sorted .sortoptions a.sortremove:focus:after,
+
+table thead th.sorted .sortoptions a.sortremove:hover:after {
+
+    color: #444;
+
+}
+
+ 
+
+a.active.selector-chooseall:focus, a.active.selector-clearall:focus,
+
+a.active.selector-chooseall:hover, a.active.selector-clearall:hover {
+
+    color: #999;
+
+}
+
+ 
+
+.calendar td a:active, .timelist a:active {
+
+    background: #444;
+
+}
+
+ 
+
+.change-list ul.toplinks .date-back a:focus,
+
+.change-list ul.toplinks .date-back a:hover {
+
+    color: #222;
+
+}
+
+ 
+
+.paginator a.showall:focus, .paginator a.showall:hover {
+
+    color: #222;
+
+}
+
+ 
+
+.paginator a:focus, .paginator a:hover {
+
+    background: #222;
+
+}
+
+ 
+
+#changelist-filter a:focus, #changelist-filter a:hover,
+
+#changelist-filter li.selected a:focus,
+
+#changelist-filter li.selected a:hover {
+
+    color: #222;
+
+}
+
+ 
+
+.calendar td a:active, .timelist a:active {
+
+    background: #292D32;
+
+    color: white;
+
+}
+
+ 
+
+.calendar caption, .calendarbox h2 {
+
+    background: #999;
+
+}
+
+ 
+
+.button.default, input[type=submit].default, .submit-row input.default {
+
+    background: #417690;
+
+}
+
+ 
+
+.button.default:hover, input[type=submit].default:hover {
+
+    background: #191D22;
+
+}
+
+ 
+
+.select2-container--admin-autocomplete .select2-results__option--highlighted[aria-selected] {
+
+    background-color: #292D32;
+
+}
+
+ 
+
+.button.default, input[type=submit].default, .submit-row input.default {
+
+    background: #417690;
+
+}
+
+ 
+
+.object-tools a:focus, .object-tools a:hover {
+
+    background-color: #292D32;
+
+}
+
+ 
+
+input[type=file]::-webkit-file-upload-button:hover {
+
+    border: 0;
+
+    background: #292D32;
+
+}
+
+ 
+
+#changelist-filter {
+
+    top: -250px;
+
+    right: 15px;
+
+}
+
+ 
+
+#changelist-filter h2 {
+
+    padding-top: 0px;
+
+    padding-bottom: 0px
+
+}
+
+p{
+
+    color:wheat;
+
+}
+
+#content h1{
+
+    text-align: center;
+
+    border: 2px solid white;
+
+    border-radius: 32px;
+
+}
+
+h2,li{
+
+color: wheat;    
+
+}
+
+.addlink,.changelink,.deletelink{
+
+    color: black;
+
+}
+
+div .datetime{
+
+    background: white;
+
+} */

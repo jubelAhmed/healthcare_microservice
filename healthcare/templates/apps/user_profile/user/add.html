@@ -1,0 +1,167 @@
+{% extends "main.html" %}
+{% load static %}
+
+{% block custom_style %}
+
+<!-- Select2 CSS -->
+<link rel="stylesheet" href="{% static 'plugins/select2/css/select2.min.css' %}">
+
+
+{% endblock custom_style %}
+
+{% block pageHeader %}
+<!-- Page Header -->
+<div class="page-header">
+    <div class="row">
+        <div class="col-sm-12">
+            <h3 class="page-title">Users</h3>
+            <ul class="breadcrumb">
+                <li class="breadcrumb-item"><a href="index.html">Dashboard</a></li>
+                <li class="breadcrumb-item"><a href="customers.html">Users</a></li>
+                <li class="breadcrumb-item active">Add User</li>
+            </ul>
+        </div>
+    </div>
+</div>
+<!-- /Page Header -->
+{% endblock %}
+
+
+{% block content %}
+
+<div>
+    {% if error %}
+    <div id="message" class="container">
+        <div class="alert alert-danger alert-dismissible text-center fade show" role="alert">
+            {{ error|title }}
+            <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+        </div>
+    </div>
+    {% endif %}
+</div>
+
+<div class="card">
+    <div class="card-body">
+        <h4 class="card-title">Basic Info</h4>
+        <form action="#" method="POST">
+            {% csrf_token %}
+
+            <div class="row">
+                <div class="col-md-6">
+                    <div class="row">
+                        <div class="col-md-8">
+                            <div class="form-group">
+                                   <label>Employee</label>
+                                   <select class="select" name="employee">
+                                       <option >Select Employee</option>
+                                       {% for employee in employee_list %}
+                                       <option value="{{employee.id}}">{{employee.full_name|title}} - {{employee.designation}}</option>
+                                       {% endfor %}
+
+
+                                   </select>
+                               </div>
+                        </div>
+                        <div class="col-md-4 mt-3 pt-1">
+                            <a href="{% url 'employee_add' %}" class="btn btn-sm btn-success me-1 ">
+                                           <i class="fas fa-plus"> Add Employee</i>
+                            </a>
+
+                        </div>
+                    </div>
+
+                    <div class="form-group">
+                        <label>Name</label>
+                        <input type="text" name="full_name" disabled class="form-control">
+                    </div>
+                    <div class="form-group">
+                        <label>Designation</label>
+                        <select class="select" name="designation" disabled>
+                            <option selected></option>
+
+
+                        </select>
+                    </div>
+                    <div class="form-group">
+                        <label>Email</label>
+                        <input type="email" name="email" class="form-control" disabled>
+                    </div>
+
+                </div>
+                <div class="col-md-6">
+
+                    <div class="form-group">
+                        <label>Phone</label>
+                        <input type="text" name="phone" class="form-control" disabled>
+                    </div>
+                    <div class="form-group">
+                        <label>National ID</label>
+                        <input type="text" name="national_id" class="form-control" disabled>
+                    </div>
+
+                </div>
+            </div>
+
+            <h4 class="card-title mt-4">Users Info</h4>
+
+            <div class="row">
+
+                <div class="col-md-6">
+                    <div class="form-group">
+                           <label>Username</label>
+                           <input type="text" name="username" class="form-control">
+                       </div>
+                     <div class="form-group">
+                           <label>User Type</label>
+                           <select class="select" name="usertype" >
+                              <option value="ADMIN" selected>admin</option>
+
+                              <option value="MANAGER">manager</option>
+
+                              <option value="DIRECTOR">director</option>
+
+                              <option value="STAFF">staff</option>
+
+
+                           </select>
+                    </div>
+
+                </div>
+                <div class="col-md-6">
+
+                     <div class="form-group">
+                        <label>Password</label>
+                        <input type="password" name="password1" class="form-control">
+                    </div>
+
+                    <div class="form-group">
+                        <label>Confirm password</label>
+                        <input type="password" name="password2" class="form-control">
+                    </div>
+
+
+                </div>
+            </div>
+
+            <div class="text-end mt-4">
+                <a href=" {% url 'user' %} "> <button type="button" class="btn btn-danger"> Cancel </button> </a>
+
+                <button type="submit" class="btn btn-primary">Add User</button>
+            </div>
+        </form>
+
+
+    </div>
+</div>
+{% endblock %}
+
+{% block custom_script %}
+
+<!-- Select2 JS -->
+<script src="{% static 'plugins/select2/js/select2.min.js' %}"></script>
+
+{% endblock custom_script %}
+
+
+</body>
+</html>

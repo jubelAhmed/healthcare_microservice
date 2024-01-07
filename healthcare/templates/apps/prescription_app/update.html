@@ -1,0 +1,276 @@
+{% extends "main.html" %}
+{% load static %}
+
+{% block custom_style %}
+
+<!-- Select2 CSS -->
+<link rel="stylesheet" href="{% static 'plugins/select2/css/select2.min.css' %}">
+
+
+{% endblock custom_style %}
+
+{% block pageHeader %}
+<!-- Page Header -->
+<div class="page-header">
+    <div class="row">
+        <div class="col-sm-12">
+            <h3 class="page-title">Prescriptions</h3>
+            <ul class="breadcrumb">
+                <li class="breadcrumb-item"><a href="#">Dashboard</a></li>
+                <li class="breadcrumb-item"><a href="{% url 'prescription' %}">Prescriptions</a></li>
+                <li class="breadcrumb-item active">Update Prescriptions</li>
+            </ul>
+        </div>
+    </div>
+</div>
+<!-- /Page Header -->
+{% endblock %}
+
+
+{% block content %}
+
+
+<div class="card">
+    <div class="card-body">
+        <h4 class="card-title">Prescription Info</h4>
+        <form action="{% url 'update_prescription'  pk=prescription.id %}" method="POST">
+            {% csrf_token %}
+            <input type="hidden" id="appointment_id" name="appointment_id" value="{{ prescription.appointment_id }}">
+            <input type="hidden" id="patient_id" name="patient_id" value="{{ prescription.patient_id }}">
+            <input type="hidden" id="doctor_id" name="doctor_id" value="{{ prescription.doctor_id }}">
+
+            <!-- Existing fields for basic info -->
+            <!-- ... -->
+
+            {% comment %} <h4 class="card-title mt-4">Prescription Details</h4> {% endcomment %}
+            <br>
+            <div class="row">
+                <!-- Medication Conditions (left column) -->
+                <div class="col-md-6">
+                    <h5>Medication Conditions</h5>
+                    <input type="hidden" id="medication_conditions_count" name="medication_conditions_count" value="{{ prescription.medication_conditions|length }}">
+                    <table class="table table-bordered" id="medicationConditionsTable">
+                        <thead>
+                            <tr>
+                                <th>Condition Name</th>
+                                <th>Details</th>
+                                <th>Action</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            {% for condition in prescription.medication_conditions %}
+                                <tr>
+                                    <td hidden>
+                                        <input type="text" value="{{ condition.id }}" name="condition_id_{{ forloop.counter0 }}"  class="form-control">
+                                        <!-- Add other Medication Condition fields as needed -->
+                                    </td>
+                                    <td>
+                                        <input type="text" value="{{ condition.condition_name }}" name="condition_name_{{ forloop.counter0 }}" class="form-control">
+                                        <!-- Add other Medication Condition fields as needed -->
+                                    </td>
+                                    <td>
+                                        <input type="text" value="{{ condition.description }}" name="description_{{ forloop.counter0 }}" class="form-control">
+                                        <!-- Add other Medication Condition details fields as needed -->
+                                    </td>
+                                    <td>
+                                        <button type="button" class="btn btn-danger" onclick="removeRow(this)">Remove</button>
+                                    </td>
+                                </tr>
+                            {% endfor %}
+                        </tbody>
+                    </table>
+                    <button type="button" class="btn btn-success" onclick="addRow()">Add Row</button>
+                </div>
+                
+                <div class="col-md-6">
+                    <h5>Medical Tests</h5>
+                    <input type="hidden" id="medical_tests_count" name="medical_tests_count" value="{{ prescription.medical_tests|length }}">
+
+                    <table class="table table-bordered" id="medicalTestsTable">
+                        <thead>
+                            <tr>
+                                <th>Test Name</th>
+                                <th>Description</th>
+                                <th>Action</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            {% for test in prescription.medical_tests %}
+                                <tr>
+                                    <td hidden>
+                                        <input type="text" value="{{ test.id }}" name="medical_test_id_{{ forloop.counter0 }}"  class="form-control">
+                                        <!-- Add other Medication Condition fields as needed -->
+                                    </td>
+                                    <td>
+                                        <input type="text" value="{{ test.test_name }}" name="test_name_{{ forloop.counter0 }}" class="form-control">
+                                    </td>
+                                    <td>
+                                        <input type="text" value="{{ test.description }}" name="description_{{ forloop.counter0 }}" class="form-control">
+                                    </td>
+                                    <td>
+                                        <button type="button" class="btn btn-danger" onclick="removeMedicalTestRow(this)">Remove</button>
+                                    </td>
+                                </tr>
+                            {% endfor %}
+                        </tbody>
+                    </table>
+                    <button type="button" class="btn btn-success" onclick="addMedicalTestRow('medicalTestsTable')">Add Row</button>
+                </div>
+        
+                
+            </div>
+
+            <!-- Medical Tests (full-width) -->
+            <br><br>
+            <h4 class="card-title mt-4">Medications</h4>
+            <input type="hidden" id="medications_count" name="medications_count" value="{{ prescription.medications|length }}">
+            <br>
+            <div class="row">
+                {% comment %} <h5>Medications</h5> {% endcomment %}
+                <table class="table table-bordered" id="medicationsTable">
+                    <thead>
+                        <tr>
+                            <th>Medicine Name</th>
+                            <th>Doses</th>
+                            <th>Route</th>
+                            <th>Frequency</th>
+                            <th>Action</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        {% for medication in prescription.medications %}
+                            <tr>
+                                <td hidden>
+                                    <input type="text" value="{{ medication.id }}" name="medication_id_{{ forloop.counter0 }}"  class="form-control">
+                                    <!-- Add other Medication Condition fields as needed -->
+                                </td>
+                                <td>
+                                    <input type="text" value="{{ medication.medicine_name }}" name="medicine_name_{{ forloop.counter0 }}" class="form-control">
+                                </td>
+                                <td>
+                                    <input type="text" value="{{ medication.doses }}" name="doses_{{ forloop.counter0 }}" class="form-control">
+                                </td>
+                                <td>
+                                    <select name="route_{{ forloop.counter0 }}" class="form-control">
+                                        <option value="Oral" {% if medication.route == 'Oral' %} selected {% endif %}>Oral</option>
+                                        <option value="Intravenous" {% if medication.route == 'Intravenous' %} selected {% endif %}>Intravenous</option>
+                                        <!-- Add other route options as needed -->
+                                    </select>
+                                </td>
+                                <td>
+                                    <input type="text" value="{{ medication.frequency }}" name="frequency_{{ forloop.counter0 }}" class="form-control">
+                                </td>
+                                <td>
+                                    <button type="button" class="btn btn-danger" onclick="removeMedicationRow(this)">Remove</button>
+                                </td>
+                            </tr>
+                        {% endfor %}
+                    </tbody>
+                </table>
+                <button type="button" class="btn btn-success" onclick="addMedicationRow('medicationsTable')">Add Row</button>
+
+               
+            </div>
+
+            <div class="text-end mt-4">
+                <a href="{% url 'prescription' %}"> <button type="button" class="btn btn-danger"> Cancel </button> </a>
+                <button type="submit" class="btn btn-primary">Update Prescription</button>
+            </div>
+        </form>
+    </div>
+</div>
+
+
+
+{% endblock %}
+
+{% block custom_script %}
+
+<script>
+    function addMedicationRow(tableId) {
+        var table = document.getElementById(tableId).getElementsByTagName('tbody')[0];
+        var newRow = table.insertRow(table.rows.length);
+        var cell1 = newRow.insertCell(0);
+        var cell2 = newRow.insertCell(1);
+        var cell3 = newRow.insertCell(2);
+        var cell4 = newRow.insertCell(3);
+        var cell5 = newRow.insertCell(4);
+
+        var medicationsCount = parseInt(document.getElementById('medications_count').value);
+        
+        cell1.innerHTML = '<input type="text" name="medicine_name_' + medicationsCount + '" class="form-control" required>';
+        cell2.innerHTML = '<input type="text" name="doses_' + medicationsCount + '" class="form-control" required>';
+        cell3.innerHTML = `<select name="route_${medicationsCount}" class="form-control" required>
+            <option value="Oral" selected>Oral</option>
+            <option value="Intravenous">Intravenous</option>
+            <!-- Add other route options as needed -->
+        </select>`;
+        cell4.innerHTML = '<input type="text" name="frequency_' + medicationsCount + '" class="form-control"required >';
+        cell5.innerHTML = '<button type="button" class="btn btn-danger" onclick="removeMedicationRow(this)">Remove</button>';
+
+        medicationsCount++;
+        document.getElementById('medications_count').value = medicationsCount;
+    }
+
+    function removeMedicationRow(button) {
+        var row = button.parentNode.parentNode;
+        row.parentNode.removeChild(row);
+    }
+</script>
+
+<script>
+    function addMedicalTestRow(tableId) {
+        var table = document.getElementById(tableId).getElementsByTagName('tbody')[0];
+        var newRow = table.insertRow(table.rows.length);
+        var cell1 = newRow.insertCell(0);
+        var cell2 = newRow.insertCell(1);
+        var cell3 = newRow.insertCell(2);
+
+        var medicalTestsCount = parseInt(document.getElementById('medical_tests_count').value);
+        
+        cell1.innerHTML = '<input type="text" name="test_name_' + medicalTestsCount + '" class="form-control" required>';
+        cell2.innerHTML = '<input type="text" name="description_' + medicalTestsCount + '" class="form-control required">';
+        cell3.innerHTML = '<button type="button" class="btn btn-danger" onclick="removeMedicalTestRow(this)">Remove</button>';
+
+        medicalTestsCount++;
+        document.getElementById('medical_tests_count').value = medicalTestsCount;
+    }
+
+    function removeMedicalTestRow(button) {
+        var row = button.parentNode.parentNode;
+        row.parentNode.removeChild(row);
+    }
+</script>
+<script>
+    function addRow() {
+        var table = document.getElementById("medicationConditionsTable").getElementsByTagName('tbody')[0];
+        var newRow = table.insertRow(table.rows.length);
+        var cell1 = newRow.insertCell(0);
+        var cell2 = newRow.insertCell(1);
+        var cell3 = newRow.insertCell(2);
+
+        var medicationConditionsCount = parseInt(document.getElementById('medication_conditions_count').value);
+        
+        cell1.innerHTML = '<input type="text" name="condition_name_' + medicationConditionsCount + '" class="form-control" required>';
+        cell2.innerHTML = '<input type="text" name="description_' + medicationConditionsCount + '" class="form-control">';
+        cell3.innerHTML = '<button type="button" class="btn btn-danger" onclick="removeRow(this)">Remove</button>';
+
+        medicationConditionsCount++;
+        document.getElementById('medication_conditions_count').value = medicationConditionsCount;
+    }
+
+    function removeRow(button) {
+        var row = button.parentNode.parentNode;
+        row.parentNode.removeChild(row);
+    }
+</script>
+
+
+<!-- Select2 JS -->
+<script src="{% static 'plugins/select2/js/select2.min.js' %}"></script>
+
+{% endblock custom_script %}
+
+
+</body>
+</html>

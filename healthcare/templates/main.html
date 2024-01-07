@@ -1,0 +1,69 @@
+<!DOCTYPE html>
+{% load static %}
+<html lang="en">
+	<head>
+		
+    {% include "header.html" %}
+
+	{% block custom_style %} 
+	
+	{% endblock custom_style %}
+	
+	<!-- Main CSS -->
+	<link rel="stylesheet" href='{% static "css/style.css" %}'>
+	</head>
+	
+    <body>
+	
+		<!-- Main Wrapper -->
+        <div class="main-wrapper">
+		
+			<!-- Header -->
+			{% include "navbar.html" %}
+			<!-- /Header -->
+			
+			<!-- Sidebar -->
+			{% include "sidebar.html" %}
+			<!-- /Sidebar -->
+			
+			
+			<!-- Page Wrapper -->
+            <div class="page-wrapper">
+                <div class="content container-fluid">
+                    
+					<!-- Page Header -->
+                    {% block pageHeader %}
+                        <!-- Page header goes here -->
+                    {% endblock %}
+				
+					<!-- /Page Header -->
+					
+					<div class="row">
+						<div class="col-sm-12">
+							{% block content %}
+                                <!-- Page content goes here -->
+                            {% endblock %}
+						</div>			
+					</div>
+					
+				</div>			
+			</div>
+			<!-- /Page Wrapper -->
+		
+        </div>
+		<!-- /Main Wrapper -->
+		
+	{% include "footer.html" %}
+	
+	
+	{% block custom_script %}
+
+	
+    {% endblock custom_script %}
+
+	<script src='{% static "js/script.js" %}'></script>
+
+	
+
+	</body>
+</html>

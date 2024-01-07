@@ -1,0 +1,98 @@
+<!-- profile.html -->
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+    <title>User Profile</title>
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
+</head>
+<body>
+
+<div class="container mt-5">
+    <h2>User Profile</h2>
+    
+    <div id="profileInfo">
+        <!-- Display user profile information here -->
+    </div>
+
+    <div id="updateProfileForm" class="mt-3">
+        <h3>Update Profile</h3>
+        <form id="updateProfileForm">
+            <div class="form-group">
+                <label for="updateFirstname">First Name:</label>
+                <input type="text" class="form-control" id="updateFirstname" required>
+            </div>
+            <div class="form-group">
+                <label for="updateLastname">Last Name:</label>
+                <input type="text" class="form-control" id="updateLastname" required>
+            </div>
+            <!-- Add more form fields as needed -->
+            <button type="button" class="btn btn-primary" onclick="updateProfile()">Update Profile</button>
+        </form>
+    </div>
+
+</div>
+
+<script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.0.7/dist/umd/popper.min.js"></script>
+<script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
+<script>
+    // Your JavaScript code for profile operations
+
+    // API base URL
+    const apiUrl = 'http://127.0.0.1:9000/api/api/user/';
+
+    // Function to fetch and display user profile
+    function fetchUserProfile() {
+        // You may get the user ID dynamically based on the authenticated user
+        const userId = 1;
+
+        $.ajax({
+            url: apiUrl + userId + '/',
+            method: 'GET',
+            success: function (data) {
+                const profileInfo = $('#profileInfo');
+                profileInfo.empty();
+                profileInfo.append(`<p><strong>Username:</strong> ${data.username}</p>`);
+                profileInfo.append(`<p><strong>Email:</strong> ${data.email}</p>`);
+                profileInfo.append(`<p><strong>First Name:</strong> ${data.firstname}</p>`);
+                profileInfo.append(`<p><strong>Last Name:</strong> ${data.lastname}</p>`);
+                // Display other profile information as needed
+
+                // Populate the update profile form
+                $('#updateFirstname').val(data.firstname);
+                $('#updateLastname').val(data.lastname);
+                // Populate other fields as needed
+            }
+        });
+    }
+
+    // Function to update user profile
+    function updateProfile() {
+        const userId = 1;  // Update with the actual user ID
+        const firstname = $('#updateFirstname').val();
+        const lastname = $('#updateLastname').val();
+        // Update other fields as needed
+
+        $.ajax({
+            url: apiUrl + userId + '/',
+            method: 'PUT',
+            contentType: 'application/json',
+            data: JSON.stringify({
+                firstname: firstname,
+                lastname: lastname,
+                // Update other fields as needed
+            }),
+            success: function () {
+                fetchUserProfile();
+            }
+        });
+    }
+
+    // Initial fetch of user profile
+    fetchUserProfile();
+</script>
+</body>
+</html>
