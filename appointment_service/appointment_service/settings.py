@@ -25,7 +25,7 @@ SECRET_KEY = 'django-insecure-xn-fx-=k=f5=xpj5fu&f6%civgytkah7o*1)!qdxndi$$%wmv3
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
 
-ALLOWED_HOSTS = []
+ALLOWED_HOSTS = ["*"]
 
 
 # Application definition
@@ -38,7 +38,7 @@ INSTALLED_APPS = [
     'django.contrib.messages',
     'django.contrib.staticfiles',
     "appointment_app",
-    'rest_framework',
+    'rest_framework'
 ]
 
 MIDDLEWARE = [
@@ -49,6 +49,8 @@ MIDDLEWARE = [
     'django.contrib.auth.middleware.AuthenticationMiddleware',
     'django.contrib.messages.middleware.MessageMiddleware',
     'django.middleware.clickjacking.XFrameOptionsMiddleware',
+    'corsheaders.middleware.CorsMiddleware',
+
 ]
 
 ROOT_URLCONF = 'appointment_service.urls'

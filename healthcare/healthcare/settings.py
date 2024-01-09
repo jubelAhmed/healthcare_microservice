@@ -26,7 +26,7 @@ SECRET_KEY = 'django-insecure-j6$tq3__=8n6k-+ithzor*7q@g$@&rg!5+_w4zh!ag3b#&^p#f
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
 
-ALLOWED_HOSTS = []
+ALLOWED_HOSTS = ["*"]
 
 
 # Application definition
@@ -40,6 +40,8 @@ INSTALLED_APPS = [
     'django.contrib.staticfiles',
     'prescription_app',
     'auth_app',
+    'appointment_app',
+    'corsheaders',
 ]
 
 MIDDLEWARE = [
@@ -50,6 +52,8 @@ MIDDLEWARE = [
     'django.contrib.auth.middleware.AuthenticationMiddleware',
     'django.contrib.messages.middleware.MessageMiddleware',
     'django.middleware.clickjacking.XFrameOptionsMiddleware',
+    'corsheaders.middleware.CorsMiddleware',
+
 ]
 
 ROOT_URLCONF = 'healthcare.urls'
@@ -152,3 +156,8 @@ LOGGING = {
         'level': 'DEBUG',
     },
 }
+
+CORS_ALLOWED_ORIGINS = [
+    "http://localhost:8001",  # Add the origin of your frontend application
+    "http://127.0.0.1:8001",  # Add the origin of your frontend application
+]

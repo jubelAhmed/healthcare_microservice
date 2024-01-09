@@ -12,11 +12,11 @@
 <div class="page-header">
     <div class="row align-items-center">
         <div class="col">
-            <h3 class="page-title">Prescriptions</h3>
+            <h3 class="page-title">Appointment</h3>
             <ul class="breadcrumb">
-                <li class="breadcrumb-item"><a href="{% url 'prescription'  %}">Dashboard</a>
+                <li class="breadcrumb-item"><a href="{% url 'home' %}">Dashboard</a>
                 </li>
-                <li class="breadcrumb-item active">Prescriptions</li>
+                <li class="breadcrumb-item active">Appointment</li>
             </ul>
         </div>
         {% comment %} <div class="col-auto">
@@ -78,11 +78,13 @@
             <table class="table table-center table-hover datatable">
                 <thead class="thead-light">
                     <tr>
-                        <th>appointment_id</th>
-                        <th>patient_id</th>
-                        <th>doctor_id</th>
-                        {% comment %} <th>Email</th>
-                        <th>Salary</th> {% endcomment %}
+                        <th>Appointment Date</th>
+                        <th>Time</th>
+                        <th>Doctor Id</th>
+                        <th>Patient Id</th>
+                        <th>Purpose</th>
+                        <th>Sick Info</th>
+                       
                         <th>Created On</th>
                         
                         {% comment %} <th>Status</th> {% endcomment %}
@@ -91,26 +93,21 @@
                 </thead>
                 <tbody>
                    
-                    {% for prescription in prescription_list %}
+                    {% for appointment in appointment_list %}
                     <tr>
-                        <td>
-                            <h2 class="table-avatar">
-                                {% comment %} <a href="profile.html" class="avatar avatar-sm me-2"><img class="avatar-img rounded-circle" src="{% static 'img/profiles/avatar-02.jpg' %}" alt="User Image"></a> {% endcomment %}
-                                <a href="profile.html">{{prescription.appointment_id}} <span></span></a>
-                            </h2>
-                        </td>
-<!--                        <td>{{prescription.designation.name}}</td>-->
-                        <td>{{prescription.patient_id}}</td>
-                        <td>{{prescription.doctor_id}}</td>
-                        {% comment %} <td>{{prescription.phone}}</td>
-                        <td>{{prescription.email}}</td>
-                        <td>{{prescription.basic_salary}}</td> {% endcomment %}
-                        <td>{{prescription.created_at}} </td>
-                        {% comment %} <td>{% if prescription.active %}  <span class="badge badge-pill bg-success-light">Active </span> {% else %} <span class="badge badge-pill bg-danger-light">Inactive</span> {% endif %}</td> {% endcomment %}
+                        <td>{{appointment.appointment_date}}</td>
+                        <td>{{appointment.appointment_time}}</td>
+                        <td>{{appointment.doctor_id}}</td>
+                        <td>{{appointment.patient_id}}</td>
+                        <td>{{appointment.purpose}}</td>
+                        <td>{{appointment.sick_information}}</td>
+
+                        <td>{{appointment.created_at}} </td>
+                        {% comment %} <td>{% if appointment.active %}  <span class="badge badge-pill bg-success-light">Active </span> {% else %} <span class="badge badge-pill bg-danger-light">Inactive</span> {% endif %}</td> {% endcomment %}
                         <td>
 
-                            {% comment %} {% if prescription.active %}
-                            <button type="button" class="btn btn-sm btn-white text-danger me-2  confirm-delete "  data-id="{{prescription.id}}"><i class="far fa-trash-alt me-1"></i>Deactivate</button>
+                            {% comment %} {% if appointment.active %}
+                            <button type="button" class="btn btn-sm btn-white text-danger me-2  confirm-delete "  data-id="{{appointment.id}}"><i class="far fa-trash-alt me-1"></i>Deactivate</button>
                             {% else %}
                             <span class="popover-list">
                                 <button class=" btn btn-sm btn-white text-secondary " type="button" data-container="body" data-bs-toggle="tooltip" data-bs-placement="top" title="" data-bs-original-title="Only super user can activate" aria-describedby="tooltip642149">Activate</button>
@@ -121,15 +118,15 @@
 <!--                                <div class="text-end mt-4">-->
 <!--                                    <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button> </a>-->
 
-<!--                                    <a href="{% url 'update_prescription' prescription.id %}"  class="btn btn-sm btn-white text-danger me-2"><i class="far fa-trash-alt me-1"></i>Confirm Delete</a>-->
+<!--                                    <a href="#"  class="btn btn-sm btn-white text-danger me-2"><i class="far fa-trash-alt me-1"></i>Confirm Delete</a>-->
 <!--                               </div>-->
 <!--                            </div>-->
-                            {% if request.session.user_type == "doctor" %}
-                            <a href="{% url 'update_prescription' prescription.id %}" class="btn btn-sm btn-white text-success me-2"><i class="far fa-edit me-1"></i> Edit</a>
-                            {% endif %} 
-                            <a href="{% url 'details_prescription' prescription.id %}" class="btn btn-sm btn-white text-success me-2"><i class="far fa-viewlink me-1"></i> View Details</a>
-                            {% comment %} <a href="{{ prescription.get_absolute_url }}" class="btn btn-sm btn-white text-success me-2"><i class="far fa-edit me-1"></i> Edit</a> {% endcomment %}
 
+                            {% if request.session.user_type == "doctor" %}
+                            <a href="{% url 'create_prescription' appointment.id appointment.patient_id appointment.doctor_id  %}" class="btn btn-sm btn-white text-success me-2"><i class="far fa-edit me-1"></i> Create Prescription</a>
+                            {% else %}
+                            <a href="{% url 'prescription'  %}" class="btn btn-sm btn-white text-success me-2"><i class="far fa-edit me-1"></i> Go to Prescription</a>
+                            {% endif %} 
 
                         </td> 
                     </tr>
@@ -163,7 +160,7 @@
             $(document).on('click', '.confirm-delete', function() {
                     var dataId = $(this).attr("data-id");
 
-                    var host_url = window.location.origin + '/user/prescription/deactivate/'+dataId
+                    var host_url = window.location.origin + '/user/appointment/deactivate/'+dataId
                     Swal.fire({
                         title: "Are you sure?",
                         text: "You won't be able to revert this!",

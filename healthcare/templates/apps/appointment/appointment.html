@@ -1,0 +1,147 @@
+{% extends "main.html" %}
+{% load static %}
+
+{% block custom_style %}
+
+<!-- Select2 CSS -->
+<link rel="stylesheet" href="{% static 'plugins/select2/css/select2.min.css' %}">
+
+
+{% endblock custom_style %}
+
+{% block pageHeader %}
+<!-- Page Header -->
+<div class="page-header">
+    <div class="row">
+        <div class="col-sm-12">
+            <h3 class="page-title">Appointment</h3>
+            <ul class="breadcrumb">
+                <li class="breadcrumb-item"><a href="#">Dashboard</a></li>
+                <li class="breadcrumb-item"><a href="#">Appointment</a></li>
+                <li class="breadcrumb-item active">Create Appointment</li>
+            </ul>
+        </div>
+    </div>
+</div>
+<!-- /Page Header -->
+{% endblock %}
+
+
+{% block content %}
+
+<div class="card">
+    <div class="card-body">
+        <form action="{% url 'appointment_create' %}" method="post" enctype="multipart/form-data">
+            {% csrf_token %}
+            <h1 class="card-title">Appointment Form</h1>
+            <div class="mb-3 form-group">
+                <label for="appointment_date" class="form-label">Appointment Date:</label>
+                <input type="date" class="form-control" id="appointment_date" name="appointment_date" required>
+            </div>
+            <div class="mb-3 form-group">
+                <label for="doctors" class="form-label">Select a Doctor:</label>
+                <select class="form-control" name="doctor_id" id="doctorDropdown" required>
+                    {% for doctor in doctor_list %}
+                    <option value="" selected>Select a doctor</option>
+                    <option value="{{ doctor.id }}">Dr. {{ doctor.first_name }} {{doctor.last_name}} - {{ doctor.doctor_specialist }}</option>
+                    {% endfor %}
+                </select>
+            </div>
+        
+            <div class="mb-3 form-group">
+                <label for="appointment_time" class="form-label">Appointment Time:</label>
+                <select class="form-control" id="appointment_time" name="appointment_time" required>
+        
+                </select>
+            </div>
+        
+           
+        
+            <div class="mb-3 form-group">
+                <label for="purpose" class="form-label">Purpose of Visit:</label>
+                <textarea class="form-control" id="purpose" name="purpose" rows="4" required></textarea>
+            </div>
+        
+            <div class="mb-3 form-group">
+                <label for="sick_information" class="form-label">Sick Information:</label>
+                <textarea class="form-control" id="sick_information" name="sick_information" rows="4" required></textarea>
+            </div>
+        
+            <!-- Hidden fields for doctor and patient IDs -->
+            {% comment %} <input type="hidden" id="doctor_id" name="doctor_id" value="10"> {% endcomment %}
+            <input type="hidden" id="patient_id" name="patient_id" value="{{request.session.user_id}}">
+            {% comment %} <input type="hidden" id="appointment_id" name="appointment_id" value="10"> {% endcomment %}
+        
+            <div class="text-end mt-4">
+                {% comment %} <a href="{% url 'employee' %}"><button type="button" class="btn btn-danger">Cancel</button></a> {% endcomment %}
+                <button type="submit" class="btn btn-primary">Submit Appointment</button>
+            </div>
+        </form>
+        
+
+
+    </div>
+</div>
+{% endblock %}
+
+{% block custom_script %}
+<script src="https://cdn.jsdelivr.net/npm/axios/dist/axios.min.js"></script>
+
+<!-- Add this script to your HTML file -->
+<script>
+    $(document).ready(function() {
+        function setCurrentDate() {
+            var currentDate = new Date().toISOString().split('T')[0];
+            $('#appointment_date').val(currentDate);
+        }
+
+        // Initial setup with the current date
+        setCurrentDate();
+
+        // Event listener for doctor dropdown change
+        $('#doctorDropdown').on('change', function() {
+            var doctorId = $(this).val();
+            var selectedDate = $('#appointment_date').val();
+            if (!selectedDate) {
+                // Show a regular alert for the user
+                alert('Please select a date before proceeding.');
+                return;
+            }
+
+            if (doctorId) {
+
+            // Fetch available appointment times for the selected doctor from your API
+            axios.get(`http://localhost:8001/appointment/doctor_available_time/${doctorId}/${selectedDate}/`)
+            .then(function (response) {
+                    // Clear previous options
+                    var appointmentTimeDropdown = document.getElementById('appointment_time');
+                    appointmentTimeDropdown.innerHTML = '';
+
+                    // Populate the appointment time dropdown with the fetched options
+                    response.data.times.forEach(function (time) {
+                        var option = document.createElement('option');
+                        option.value = time;
+                        option.text = time;
+                        appointmentTimeDropdown.appendChild(option);
+                    });
+                })
+                .catch(function (error) {
+                    console.error('Error fetching appointment times:', error);
+                });
+            } else {
+                console.error('Invalid doctorId:', doctorId);
+            }
+        });
+        
+    });
+</script>
+
+
+<!-- Select2 JS -->
+<script src="{% static 'plugins/select2/js/select2.min.js' %}"></script>
+
+{% endblock custom_script %}
+
+
+</body>
+</html>

@@ -90,7 +90,6 @@ class RegistrationView(View):
 class HomeView(View):
     def get(self, request):
         if 'access_token' in request.session:
-            print(request.session.get('user_id'))
             return render(request, 'main_home.html')
         else:
             return redirect('login')

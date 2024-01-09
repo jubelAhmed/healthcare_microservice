@@ -1,0 +1,53 @@
+{% load static %}
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Appointment Form</title>
+    <link rel="stylesheet" type="text/css" href="{% static 'css/style.css' %}">
+</head>
+<body>
+    
+    <form action="{% url "appointment_create" %}" method="post" enctype="multipart/form-data">
+        {% csrf_token %}
+        <h1>Appointment Form</h1>
+        <label for="doctors">Select a Doctor:</label>
+        <select name="my_model_dropdown">
+            {% for doctor in doctor_list %}
+            <option value="{{ doctor.id }}">Dr. {{ doctor.name }} - {{ doctor.expertise }}</option>
+            {% endfor %}
+        </select>
+        <label for="appointment_time">Appointment Time:</label>
+        <select id="appointment_time" name="appointment_time" required>
+            <option value="09:00">9:00 AM</option>
+            <option value="09:20">9:20 AM</option>
+            <!-- Add other time options -->
+        </select>
+        <br><br>
+
+        <label for="appointment_date">Appointment Date:</label>
+        <!-- Set the min attribute to restrict past dates -->
+        <input type="date" id="appointment_date" name="appointment_date" required>
+        <br><br>
+
+        <label for="purpose">Purpose of Visit:</label>
+        <textarea id="purpose" name="purpose" rows="4" cols="50" required></textarea>
+        <br><br>
+
+        <label for="sick_information">Sick Information:</label>
+        <textarea id="sick_information" name="sick_information" rows="4" cols="50" required></textarea>
+        <br><br>
+
+        <!-- Hidden fields for doctor and patient IDs -->
+        <input type="hidden" id="doctor_id" name="doctor_id" value="10">
+        <input type="hidden" id="patient_id" name="patient_id" value="10">
+        <input type="hidden" id="appointment_id" name="appointment_id" value="10">
+        
+        
+        <br><br>
+
+        <input type="submit" value="Submit">
+
+        
+    </form>
+</body>
+</html>

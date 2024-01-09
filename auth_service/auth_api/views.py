@@ -46,3 +46,29 @@ class UserRetrieveUpdateDestroyView(generics.RetrieveUpdateDestroyAPIView):
     permission_classes = [IsAuthenticated]
         
         
+class DoctorListView(APIView):
+    # permission_classes = [IsAuthenticated]
+
+    def get(self, request, *args, **kwargs):
+        doctors = CustomUser.objects.filter(is_doctor=True)
+        serializer = UserSerializer(doctors, many=True)
+        return Response(serializer.data)
+
+class PatientListView(APIView):
+    # permission_classes = [IsAuthenticated]
+
+    def get(self, request, *args, **kwargs):
+        patients = CustomUser.objects.filter(is_patient=True)
+        serializer = UserSerializer(patients, many=True)
+        return Response(serializer.data)
+    
+
+class DoctorDetailView(generics.RetrieveAPIView):
+    # permission_classes = [IsAuthenticated]
+    queryset = CustomUser.objects.filter(is_doctor=True)
+    serializer_class = UserSerializer
+
+class PatientDetailView(generics.RetrieveAPIView):
+    # permission_classes = [IsAuthenticated]
+    queryset = CustomUser.objects.filter(is_patient=True)
+    serializer_class = UserSerializer

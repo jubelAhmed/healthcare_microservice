@@ -1,0 +1,170 @@
+{% extends "main.html" %}
+{% load static %}
+
+{% block custom_style %}
+
+<!-- Select2 CSS -->
+<link rel="stylesheet" href="{% static 'plugins/select2/css/select2.min.css' %}">
+
+
+{% endblock custom_style %}
+
+{% block pageHeader %}
+<!-- Page Header -->
+<div class="page-header">
+    <div class="row">
+        <div class="col-sm-12">
+            <h3 class="page-title">Prescriptions</h3>
+            <ul class="breadcrumb">
+                <li class="breadcrumb-item"><a href="#">Dashboard</a></li>
+                <li class="breadcrumb-item"><a href="{% url 'prescription'  %}">Prescriptions</a></li>
+                <li class="breadcrumb-item active">Update Prescriptions</li>
+            </ul>
+        </div>
+    </div>
+</div>
+<!-- /Page Header -->
+{% endblock %}
+
+
+{% block content %}
+
+<div class="card" id="prescriptionContent">
+    <div class="card-body">
+        <h4 class="card-title">Prescription Info</h4>
+        
+        <!-- Existing fields for basic info -->
+        <h5 class="mt-4">Basic Info</h5>
+        <div class="row">
+            <div class="col-md-4 mb-3">
+                <strong>Appointment ID:</strong> {{ prescription.appointment_id }}
+            </div>
+            <div class="col-md-4 mb-3">
+                <strong>Patient ID:</strong> {{ prescription.patient_id }}
+            </div>
+            <div class="col-md-4 mb-3">
+                <strong>Doctor ID:</strong> {{ prescription.doctor_id }}
+            </div>
+        </div>
+        
+        <!-- Medication Conditions -->
+        <div class="row mt-4">
+            <div class="col-md-12">
+                <h5>Medication Conditions</h5>
+                <table class="table table-bordered">
+                    <thead>
+                        <tr>
+                            <th>Condition Name</th>
+                            <th>Description</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        {% for condition in prescription.medication_conditions %}
+                            <tr>
+                                <td>{{ condition.condition_name }}</td>
+                                <td>{{ condition.description }}</td>
+                            </tr>
+                        {% endfor %}
+                    </tbody>
+                </table>
+            </div>
+        </div>
+
+        <!-- Medical Tests -->
+        <div class="row mt-4">
+            <div class="col-md-12">
+                <h5>Medical Tests</h5>
+                <table class="table table-bordered">
+                    <thead>
+                        <tr>
+                            <th>Test Name</th>
+                            <th>Description</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        {% for test in prescription.medical_tests %}
+                            <tr>
+                                <td>{{ test.test_name }}</td>
+                                <td>{{ test.description }}</td>
+                            </tr>
+                        {% endfor %}
+                    </tbody>
+                </table>
+            </div>
+        </div>
+
+        <!-- Medications -->
+        <div class="row mt-4">
+            <div class="col-md-12">
+                <h5>Medications</h5>
+                <table class="table table-bordered">
+                    <thead>
+                        <tr>
+                            <th>Medicine Name</th>
+                            <th>Doses</th>
+                            <th>Route</th>
+                            <th>Frequency</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        {% for medication in prescription.medications %}
+                            <tr>
+                                <td>{{ medication.medicine_name }}</td>
+                                <td>{{ medication.doses }}</td>
+                                <td>{{ medication.route }}</td>
+                                <td>{{ medication.frequency }}</td>
+                            </tr>
+                        {% endfor %}
+                    </tbody>
+                </table>
+            </div>
+        </div>
+
+        
+    </div>
+</div>
+
+<div class="card mt-0">
+    <div class="card-body">
+        <div class="row mt-4">
+            <div class="col-md-12">
+                <div class="text-end mb-4">
+                    <button type="button" class="btn btn-primary" onclick="printPrescription()">Print Prescription</button>
+
+                    <a href="{% url 'prescription'  %}"> <button type="button" class="btn btn-danger"> Cancel </button> </a>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+
+
+
+
+{% endblock %}
+
+{% block custom_script %}
+
+<script>
+    function printPrescription() {
+        var printWindow = window.open('', '_blank');
+        var printContent = document.getElementById('prescriptionContent').innerHTML;
+
+        printWindow.document.write('<html><head><title>Prescription Info</title></head><body>');
+        printWindow.document.write(printContent);
+        printWindow.document.write('</body></html>');
+
+        printWindow.document.close();
+        printWindow.print();
+    }
+</script>
+
+<!-- Select2 JS -->
+<script src="{% static 'plugins/select2/js/select2.min.js' %}"></script>
+
+{% endblock custom_script %}
+
+
+</body>
+</html>

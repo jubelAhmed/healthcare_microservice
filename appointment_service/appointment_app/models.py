@@ -6,7 +6,6 @@ from django.db import models
 from django.db import models
 
 class Appointment(models.Model):
-    appointment_id = models.CharField(max_length=50)
     doctor_id = models.CharField(max_length=50)
     patient_id = models.CharField(max_length=50)
     appointment_time = models.CharField(max_length=50,choices=[('09:00', '9:00 AM'), ('09:20', '9:20 AM'), ('09:40', '9:40 AM'),

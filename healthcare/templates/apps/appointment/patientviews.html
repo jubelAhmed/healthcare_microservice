@@ -1,0 +1,118 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Patients' Appointments</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            background-color: #f4f4f4;
+            margin: 0;
+            padding: 20px;
+        }
+
+        h1 {
+            text-align: center;
+            color: #333;
+        }
+
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            margin-top: 20px;
+        }
+
+        th, td {
+            border: 1px solid #ccc;
+            padding: 8px;
+            text-align: left;
+        }
+
+        th {
+            background-color: #007bff;
+            color: white;
+        }
+
+        td {
+            background-color: #fff;
+        }
+
+        button {
+            padding: 5px 10px;
+            margin-right: 5px;
+            border: none;
+            border-radius: 4px;
+            cursor: pointer;
+        }
+
+        button:hover {
+            background-color: #0056b3;
+            color: white;
+        }
+    </style>
+</head>
+<body>
+    <h1>Patients' Appointments</h1>
+
+    <table class="appointments">
+        <tr>
+            <th>Appointment ID</th>
+            <th>Doctor Name</th>
+            <th>Appointment Time</th>
+            <th>Purpose</th>
+            <th>Actions</th>
+        </tr>
+        
+    </table>
+
+    <script>
+        
+        const appointmentsData = [
+            { appointment_id: 1, doctor_name: 'Dr. Smith', appointment_time: '2024-01-10 09:00:00', purpose: 'Follow-up checkup' },
+            { appointment_id: 2, doctor_name: 'Dr. Johnson', appointment_time: '2024-01-11 10:30:00', purpose: 'Routine checkup' },
+            // More appointment data...
+        ];
+
+        
+        const appointmentsTable = document.querySelector('.appointments');
+
+        appointmentsData.forEach(appointment => {
+            const row = appointmentsTable.insertRow(-1);
+            
+            const cellId = row.insertCell(0);
+            cellId.innerHTML = appointment.appointment_id;
+
+            const cellName = row.insertCell(1);
+            cellName.innerHTML = appointment.doctor_name;
+
+            const cellTime = row.insertCell(2);
+            cellTime.innerHTML = appointment.appointment_time;
+
+            const cellPurpose = row.insertCell(3);
+            cellPurpose.innerHTML = appointment.purpose;
+
+            const cellActions = row.insertCell(4);
+            cellActions.innerHTML = `
+                <button onclick="viewDetails(${appointment.appointment_id})">View Details</button>
+                <button onclick="reschedule(${appointment.appointment_id})">Reschedule</button>
+                <button onclick="cancel(${appointment.appointment_id})">Cancel</button>
+            `;
+        });
+
+        // Functions for button actions
+        function viewDetails(appointmentId) {
+            // Implement logic to view more details for the appointment
+            console.log(`Viewing details for appointment ID: ${appointmentId}`);
+        }
+
+        function reschedule(appointmentId) {
+            // Implement logic to reschedule the appointment
+            console.log(`Rescheduling appointment ID: ${appointmentId}`);
+        }
+
+        function cancel(appointmentId) {
+            // Implement logic to cancel the appointment
+            console.log(`Cancelling appointment ID: ${appointmentId}`);
+        }
+    </script>
+</body>
+</html>

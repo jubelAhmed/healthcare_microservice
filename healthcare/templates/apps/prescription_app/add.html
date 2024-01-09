@@ -14,11 +14,11 @@
 <div class="page-header">
     <div class="row">
         <div class="col-sm-12">
-            <h3 class="page-title">Employees</h3>
+            <h3 class="page-title">Prescriptions</h3>
             <ul class="breadcrumb">
-                <li class="breadcrumb-item"><a href="index.html">Dashboard</a></li>
-                <li class="breadcrumb-item"><a href="customers.html">Employees</a></li>
-                <li class="breadcrumb-item active">Add Employees</li>
+                <li class="breadcrumb-item"><a href="#">Dashboard</a></li>
+                <li class="breadcrumb-item"><a href="{% url 'prescription'  %}">Prescriptions</a></li>
+                <li class="breadcrumb-item active">Create Prescriptions</li>
             </ul>
         </div>
     </div>
@@ -32,120 +32,256 @@
 
 <div class="card">
     <div class="card-body">
-        <h4 class="card-title">Basic Info</h4>
-        <form action="#" method="POST">
+        <h4 class="card-title">Prescription Info</h4>
+        <form action="" method="POST">
             {% csrf_token %}
-
             <div class="row">
-                <div class="col-md-6">
-                    <div class="form-group">
-                        <label>Name</label>
-                        <input type="text" name="full_name" class="form-control">
-                    </div>
-                    <div class="form-group">
-                        <label>Designation</label>
-                        <select class="select" name="designation">
-                             <option value="STAFF" selected>staff</option>
-                            <option value="HR">hr</option>
-                             <option value="DIRECTOR">director</option>
-
-                              <option value="MANAGER">manager</option>
-
-                              <option value="SENIOR_ENGINEER">senior engineer</option>
-
-                              <option value="JUNIOR_ENGINEER">junior engineer</option>
-
-
-
-                        </select>
-
-                    </div>
-                    <div class="form-group">
-                        <label>Email</label>
-                        <input type="email" name="email" class="form-control">
-                    </div>
-
+                <div class="col-md-4 mb-3">
+                    <label for="appointment_id" class="form-label">Appointment ID</label>
+                    <input id="appointment_id" name="appointment_id" value="{{ prescription.appointment_id }}" class="form-control" >
                 </div>
-                <div class="col-md-6">
-
-                    <div class="form-group">
-                        <label>Phone</label>
-                        <input type="text" name="phone" class="form-control">
-                    </div>
-                    <div class="form-group">
-                        <label>National ID</label>
-                        <input type="text" name="national_id" class="form-control">
-                    </div>
-
+            
+                <div class="col-md-4 mb-3">
+                    <label for="patient_id" class="form-label">Patient ID</label>
+                    <input id="patient_id" name="patient_id" value="{{ prescription.patient_id }}" class="form-control" >
+                </div>
+            
+                <div class="col-md-4 mb-3">
+                    <label for="doctor_id" class="form-label">Doctor ID</label>
+                    <input id="doctor_id" name="doctor_id" value="{{ prescription.doctor_id }}" class="form-control" >
                 </div>
             </div>
+            
+            {% comment %} <input id="appointment_id" name="appointment_id" value="{{ prescription.appointment_id }}" disabled>
+            <input  id="patient_id" name="patient_id" value="{{ prescription.patient_id }}" disabled>
+            <input  id="doctor_id" name="doctor_id" value="{{ prescription.doctor_id }}" disabled   > {% endcomment %}
 
-            <h4 class="card-title mt-4">Others Info</h4>
+            <!-- Existing fields for basic info -->
+            <!-- ... -->
 
+            {% comment %} <h4 class="card-title mt-4">Prescription Details</h4> {% endcomment %}
+            <br>
             <div class="row">
-
+                <!-- Medication Conditions (left column) -->
                 <div class="col-md-6">
-                    <div class="form-group">
-                        <label>Country</label>
-                        <select class="select" name="country">
-                            <option>Select Country</option>
-                            <option selected>Bangladesh</option>
-                            <option>India</option>
-                            <option>China</option>
-
-                            <option>United States</option>
-                        </select>
-                    </div>
-                    <div class="form-group">
-                           <label>Division</label>
-                           <input type="text" name="division" class="form-control">
-                       </div>
-                    <div class="form-group">
-                        <label>District</label>
-                        <input type="text" name="district" class="form-control">
-                    </div>
-
-                    <div class="form-group">
-                        <label>Present Address</label>
-                        <textarea rows="3" cols="5" name="present_address" class="form-control" placeholder="Present Address"></textarea>
-                    </div>
-
-
+                    <h5>Medication Conditions</h5>
+                    <input type="hidden" id="medication_conditions_count" name="medication_conditions_count" value="1">
+                    <table class="table table-bordered" id="medicationConditionsTable">
+                        <thead>
+                            <tr>
+                                <th>Condition Name</th>
+                                <th>Details</th>
+                                <th>Action</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+    
+                            <tr>
+                                <td hidden>
+                                    <input type="text" value="" name="condition_id_0"  class="form-control">
+                                    <!-- Add other Medication Condition fields as needed -->
+                                </td>
+                                <td>
+                                    <input type="text" value="" name="condition_name_0" class="form-control">
+                                    <!-- Add other Medication Condition fields as needed -->
+                                </td>
+                                <td>
+                                    <input type="text" value="" name="description_0" class="form-control">
+                                    <!-- Add other Medication Condition details fields as needed -->
+                                </td>
+                                <td>
+                                    <button type="button" class="btn btn-danger" onclick="removeRow(this)">Remove</button>
+                                </td>
+                            </tr>
+                           
+                        </tbody>
+                    </table>
+                    <button type="button" class="btn btn-success" onclick="addRow()">Add Row</button>
                 </div>
+                
                 <div class="col-md-6">
-                    <div class="form-group">
-                        <label>Basic Salary</label>
-                        <input type="text" name="basic_salary" class="form-control">
-                    </div>
-                    <div class="form-group">
-                        <label>Experience</label>
-                        <input type="text" name="experience" class="form-control">
-                    </div>
-                    <div class="form-group">
-                        <label>Educational Qualification</label>
-                        <input type="text" name="educational_qualification" class="form-control">
-                    </div>
+                    <h5>Medical Tests</h5>
+                    <input type="hidden" id="medical_tests_count" name="medical_tests_count" value="1">
 
-                    <div class="form-group">
-                        <label>Permanent Address</label>
-                        <textarea rows="3" cols="5"  name="permanent_address" class="form-control" placeholder="Permanent Address"></textarea>
-                    </div>
+                    <table class="table table-bordered" id="medicalTestsTable">
+                        <thead>
+                            <tr>
+                                <th>Test Name</th>
+                                <th>Description</th>
+                                <th>Action</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                
+                                <tr>
+                                    <td hidden>
+                                        <input type="text" value="" name="medical_test_id_0"  class="form-control">
+                                        <!-- Add other Medication Condition fields as needed -->
+                                    </td>
+                                    <td>
+                                        <input type="text" value="" name="test_name_0" class="form-control">
+                                    </td>
+                                    <td>
+                                        <input type="text" value="" name="description_0" class="form-control">
+                                    </td>
+                                    <td>
+                                        <button type="button" class="btn btn-danger" onclick="removeMedicalTestRow(this)">Remove</button>
+                                    </td>
+                                </tr>
+                           
+                        </tbody>
+                    </table>
+                    <button type="button" class="btn btn-success" onclick="addMedicalTestRow('medicalTestsTable')">Add Row</button>
                 </div>
+        
+                
+            </div>
+
+            <!-- Medical Tests (full-width) -->
+            <br><br>
+            <h4 class="card-title mt-4">Medications</h4>
+            <input type="hidden" id="medications_count" name="medications_count" value="1">
+            <br>
+            <div class="row">
+                {% comment %} <h5>Medications</h5> {% endcomment %}
+                <table class="table table-bordered" id="medicationsTable">
+                    <thead>
+                        <tr>
+                            <th>Medicine Name</th>
+                            <th>Doses</th>
+                            <th>Route</th>
+                            <th>Frequency</th>
+                            <th>Action</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        
+                            <tr>
+                                <td hidden>
+                                    <input type="text" value="" name="medication_id_0"  class="form-control">
+                                    <!-- Add other Medication Condition fields as needed -->
+                                </td>
+                                <td>
+                                    <input type="text" value="" name="medicine_name_0" class="form-control">
+                                </td>
+                                <td>
+                                    <input type="text" value="" name="doses_0" class="form-control">
+                                </td>
+                                <td>
+                                    <select name="route_0" class="form-control">
+                                        <option value="Oral" {% if medication.route == 'Oral' %} selected {% endif %}>Oral</option>
+                                        <option value="Intravenous" {% if medication.route == 'Intravenous' %} selected {% endif %}>Intravenous</option>
+                                        <!-- Add other route options as needed -->
+                                    </select>
+                                </td>
+                                <td>
+                                    <input type="text" vvalue="" name="frequency_0" class="form-control">
+                                </td>
+                                <td>
+                                    <button type="button" class="btn btn-danger" onclick="removeMedicationRow(this)">Remove</button>
+                                </td>
+                            </tr>
+                 
+                    </tbody>
+                </table>
+                <button type="button" class="btn btn-success" onclick="addMedicationRow('medicationsTable')">Add Row</button>
+
+               
             </div>
 
             <div class="text-end mt-4">
-                <a href=" {% url 'employee' %} "> <button type="button" class="btn btn-danger"> Cancel </button> </a>
-
-                <button type="submit" class="btn btn-primary">Add Employee</button>
+                <a href="{% url 'prescription'  %}"> <button type="button" class="btn btn-danger"> Cancel </button> </a>
+                <button type="submit" class="btn btn-primary">Create Prescription</button>
             </div>
         </form>
-
-
     </div>
 </div>
+
+
+
 {% endblock %}
 
 {% block custom_script %}
+
+<script>
+    function addMedicationRow(tableId) {
+        var table = document.getElementById(tableId).getElementsByTagName('tbody')[0];
+        var newRow = table.insertRow(table.rows.length);
+        var cell1 = newRow.insertCell(0);
+        var cell2 = newRow.insertCell(1);
+        var cell3 = newRow.insertCell(2);
+        var cell4 = newRow.insertCell(3);
+        var cell5 = newRow.insertCell(4);
+
+        var medicationsCount = parseInt(document.getElementById('medications_count').value);
+        
+        cell1.innerHTML = '<input type="text" name="medicine_name_' + medicationsCount + '" class="form-control" required>';
+        cell2.innerHTML = '<input type="text" name="doses_' + medicationsCount + '" class="form-control" required>';
+        cell3.innerHTML = `<select name="route_${medicationsCount}" class="form-control" required>
+            <option value="Oral" selected>Oral</option>
+            <option value="Intravenous">Intravenous</option>
+            <!-- Add other route options as needed -->
+        </select>`;
+        cell4.innerHTML = '<input type="text" name="frequency_' + medicationsCount + '" class="form-control"required >';
+        cell5.innerHTML = '<button type="button" class="btn btn-danger" onclick="removeMedicationRow(this)">Remove</button>';
+
+        medicationsCount++;
+        document.getElementById('medications_count').value = medicationsCount;
+    }
+
+    function removeMedicationRow(button) {
+        var row = button.parentNode.parentNode;
+        row.parentNode.removeChild(row);
+    }
+</script>
+
+<script>
+    function addMedicalTestRow(tableId) {
+        var table = document.getElementById(tableId).getElementsByTagName('tbody')[0];
+        var newRow = table.insertRow(table.rows.length);
+        var cell1 = newRow.insertCell(0);
+        var cell2 = newRow.insertCell(1);
+        var cell3 = newRow.insertCell(2);
+
+        var medicalTestsCount = parseInt(document.getElementById('medical_tests_count').value);
+        
+        cell1.innerHTML = '<input type="text" name="test_name_' + medicalTestsCount + '" class="form-control" required>';
+        cell2.innerHTML = '<input type="text" name="description_' + medicalTestsCount + '" class="form-control required">';
+        cell3.innerHTML = '<button type="button" class="btn btn-danger" onclick="removeMedicalTestRow(this)">Remove</button>';
+
+        medicalTestsCount++;
+        document.getElementById('medical_tests_count').value = medicalTestsCount;
+    }
+
+    function removeMedicalTestRow(button) {
+        var row = button.parentNode.parentNode;
+        row.parentNode.removeChild(row);
+    }
+</script>
+<script>
+    function addRow() {
+        var table = document.getElementById("medicationConditionsTable").getElementsByTagName('tbody')[0];
+        var newRow = table.insertRow(table.rows.length);
+        var cell1 = newRow.insertCell(0);
+        var cell2 = newRow.insertCell(1);
+        var cell3 = newRow.insertCell(2);
+
+        var medicationConditionsCount = parseInt(document.getElementById('medication_conditions_count').value);
+        
+        cell1.innerHTML = '<input type="text" name="condition_name_' + medicationConditionsCount + '" class="form-control" required>';
+        cell2.innerHTML = '<input type="text" name="description_' + medicationConditionsCount + '" class="form-control">';
+        cell3.innerHTML = '<button type="button" class="btn btn-danger" onclick="removeRow(this)">Remove</button>';
+
+        medicationConditionsCount++;
+        document.getElementById('medication_conditions_count').value = medicationConditionsCount;
+    }
+
+    function removeRow(button) {
+        var row = button.parentNode.parentNode;
+        row.parentNode.removeChild(row);
+    }
+</script>
+
 
 <!-- Select2 JS -->
 <script src="{% static 'plugins/select2/js/select2.min.js' %}"></script>
