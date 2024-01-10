@@ -9,7 +9,7 @@ import logging
 
 logger = logging.getLogger(__name__)
 
-def prescription(request):
+def prescription(request, user_type, user_id):
     if request.method == 'POST':
         try:
             appointment_id = request.POST.get('appointment_id')
@@ -79,12 +79,16 @@ def prescription(request):
             print(f"Error processing the prescription form: {e}")
             return HttpResponse('An error occurred while processing the prescription form.')
     else:
-        
-        api_url = f"{HOST_URL}/prescriptions/" 
+        query = ""
+        if user_type == "doctor":
+           query = f"?doctor_id={user_id}" 
+        if user_type == "patient":
+            query = f"?patient_id={user_id}" 
+        api_url = f"{HOST_URL}/prescriptions/{query}" 
         response = requests.get(api_url) 
-        print("response.status_code")
+        print(" Prescription 1")
         print(response.status_code)
-        print(response)
+        print(response.text)
         prescription_list = []
         if response.status_code == 200:
             prescription_list = response.json().get('results', [])  # Assuming the data is in JSON format
@@ -166,9 +170,9 @@ def create_prescription(request, appointment_id, patient_id, doctor_id):
     else:
         api_url = f"{HOST_URL}/prescriptions/?appointment_id={appointment_id}&&patient_id={patient_id}&&doctor_id={doctor_id}" 
         response = requests.get(api_url) 
-        print("response.status_code")
+        print("response.status_code 3")
         print(response.status_code)
-        print(response)
+        print(response.text)
         prescription_list = []
         if response.status_code == 200:
             prescription_list = response.json().get('results', [])  # Assuming the data is in JSON format
@@ -292,9 +296,9 @@ def details_prescription(request, pk):
     try:
         api_url = f"{HOST_URL}/prescriptions/?id={pk}" 
         response = requests.get(api_url) 
-        print("response.status_code")
+        print("response.status_code 3")
         print(response.status_code)
-        print(response)
+        print(response.text)
         prescription_list = []
         if response.status_code == 200:
             prescription_list = response.json().get('results', [])  # Assuming the data is in JSON format

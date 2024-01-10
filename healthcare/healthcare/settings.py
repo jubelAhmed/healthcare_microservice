@@ -42,6 +42,7 @@ INSTALLED_APPS = [
     'auth_app',
     'appointment_app',
     'corsheaders',
+    'payment_app',
 ]
 
 MIDDLEWARE = [

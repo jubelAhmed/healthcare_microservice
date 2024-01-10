@@ -32,7 +32,7 @@
                 </li>
 
                 <li class="{% if request.path == '/prescription/' %}active{% endif %}">
-                    <a style="background-color:#7638ff;color:white;font-size:16px;border-radius:25px;" href="{% url 'prescription'  %}"><i class="fa fa-clipboard-prescription"></i> <span> View Prescription</span> <span class="menu-arrow1"></span></a>
+                    <a style="background-color:#7638ff;color:white;font-size:16px;border-radius:25px;" href="{% url 'prescription' request.session.user_type request.session.user_id %}"><i class="fa fa-clipboard-prescription"></i> <span> View Prescription</span> <span class="menu-arrow1"></span></a>
                 </li>   
             </ul>
         </div>

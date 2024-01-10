@@ -22,4 +22,5 @@ urlpatterns = [
     path("prescription/", include("prescription_app.urls")),
     path("", include("auth_app.urls")),
     path("appointment/", include("appointment_app.urls")),
+    path("transaction/", include("payment_app.urls")),
 ]

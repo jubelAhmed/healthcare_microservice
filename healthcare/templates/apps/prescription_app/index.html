@@ -14,7 +14,7 @@
         <div class="col">
             <h3 class="page-title">Prescriptions</h3>
             <ul class="breadcrumb">
-                <li class="breadcrumb-item"><a href="{% url 'prescription'  %}">Dashboard</a>
+                <li class="breadcrumb-item"><a href="{% url 'prescription' request.session.user_type request.session.user_id  %}">Dashboard</a>
                 </li>
                 <li class="breadcrumb-item active">Prescriptions</li>
             </ul>

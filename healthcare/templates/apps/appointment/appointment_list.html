@@ -125,7 +125,7 @@
                             {% if request.session.user_type == "doctor" %}
                             <a href="{% url 'create_prescription' appointment.id appointment.patient_id appointment.doctor_id  %}" class="btn btn-sm btn-white text-success me-2"><i class="far fa-edit me-1"></i> Create Prescription</a>
                             {% else %}
-                            <a href="{% url 'prescription'  %}" class="btn btn-sm btn-white text-success me-2"><i class="far fa-edit me-1"></i> Go to Prescription</a>
+                            <a href="{% url 'prescription' request.session.user_type request.session.user_id %}" class="btn btn-sm btn-white text-success me-2"><i class="far fa-edit me-1"></i> Go to Prescription</a>
                             {% endif %} 
 
                         </td> 

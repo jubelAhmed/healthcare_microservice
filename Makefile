@@ -10,5 +10,5 @@ auth:
 prescription:
 	cd prescription_service && python3 manage.py runserver 8005
 
-payment_service:
-	cd prescription_service && python3 manage.py runserver 8004
+payment:
+	cd payment_service && python3 manage.py runserver 8006
