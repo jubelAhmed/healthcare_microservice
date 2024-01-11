@@ -27,9 +27,11 @@ def appointment(request):
         print("data", obj)
         response = requests.post(f'{APPOINTMENT_HOST_URL}appointments/', json=obj)
         print("response",response.text)
-        if response.status_code == 200:
-            print("response 2",response.json())
-            return redirect('home')
+        if response.status_code == 201:
+            print("app response 2",response.json())
+            resp = response.json()
+            appointment_id = resp["id"]
+            return redirect('transaction', appointment_id=appointment_id, patient_id=patient_id)
         else:
             # messages.error(request, 'Appointment creation failed')  
             return redirect('appointment_create')

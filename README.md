@@ -1,17 +1,44 @@
-## Health Care Management System
-##  
+# Healthcare Management
 
-## Installation and run
 
-healtcare 
+## Table of Contents
 
-8001
+- [About](#about)
+- [Installation](#installation)
+- [Usage](#usage)
+- [Features](#features)
+- [Contributing](#contributing)
+- [License](#license)
+- [Contact](#contact)
 
-auth
-8002
+## About
 
-appointment
-8003
+[Provide a more detailed description of your project. What problem does it solve? How does it benefit users?]
 
-prescription
-8005
+## Installation
+
+[Include step-by-step instructions on how to install your project, including any dependencies]
+
+```bash
+# Linux Machine Setup
+python3 -m venv venv
+source venv/bin/activate
+python3 -m pip install -r requirements.txt
+
+
+# run healthcare main service script using make command
+make main
+
+# run appointment micro service
+make healthcare
+
+# run auth micro service
+make auth
+
+# run payment micro service
+make payment
+
+# run prescription micro service
+make prescription
+
+``` 

@@ -18,6 +18,17 @@ class Appointment(models.Model):
     appointment_date = models.DateField()
     purpose = models.TextField()
     sick_information = models.TextField()
+    PAYMENT_STATUS_CHOICES = [
+        ('failed', 'Failed'),
+        ('success', 'Success'),
+    ]
+
+    payment_status = models.CharField(
+        max_length=10,
+        choices=PAYMENT_STATUS_CHOICES,
+        default='failed',
+    )
+
     created_at = models.DateTimeField(auto_now_add=True)
     updated_at = models.DateTimeField(auto_now=True)
 

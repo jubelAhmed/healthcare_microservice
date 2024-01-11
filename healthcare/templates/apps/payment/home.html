@@ -11,38 +11,42 @@
         
         </div>
         <div class="rightside">
-          <form method="POST" action="{% url 'transaction' %}">
+          <form method="POST" action="{% url 'transaction' appointment_id  patient_id %}">
             {% csrf_token %}
+
             <h1>CheckOut</h1>
             <h2>Payment Information</h2>
+            
             <p>Cardholder Name</p>
             <input type="text" class="inputbox" name="name" required />
+        
             <p>Card Number</p>
-            <input type="number" class="inputbox" name="card_number" id="card_number" required />
-
-            <p>Card Type</p>
-            <select class="inputbox" name="card_type" id="card_type" required>
-              <option value="">--Select a Card Type--</option>
-              <option value="Visa">Visa</option>
-              
-              <option value="MasterCard">MasterCard</option>
-            </select>
-<div class="expcvv">
-
-            <p class="expcvv_text">Expiry</p>
-            <input type="date" class="inputbox" name="exp_date" id="exp_date" required />
-
-            <p class="expcvv_text2">CVV</p>
-            <input type="password" class="inputbox" name="cvv" id="cvv" required />
-            <p>appointment_id</p>
-            <input type="text" class="inputbox" name="appointment_id" id="appointment_id"  />
-            <p>patient_id</p>
-            <input type="text" class="inputbox" name="patient_id" id="patient_id"  />
-            
-        </div>
+            <input type="text" class="inputbox" name="card_number" id="card_number" required />
+        
             <p></p>
-            <button type="submit" class="button">Book Appointment for 20£</button>
-          </form>
+            <div class="exp-date-cvv">
+                <div>
+                    <label for="expiry_month">Expiry Month</label>
+                    <input type="text" class="inputbox" name="expiry_month" id="expiry_month" required />
+                </div>
+                <div>
+                    <label for="expiry_year">Expiry Year</label>
+                    <input type="text" class="inputbox" name="expiry_year" id="expiry_year" required />
+                </div>
+            </div>
+        
+            <p>CVC</p>
+            <input type="text" class="inputbox" name="cvc" id="cvc" required />
+        
+            <input type="hidden" name="appointment_id" id="appointment_id" value="{{appointment_id}}" />
+            <input type="hidden" name="patient_id" id="patient_id" value="5" />
+            <input type="hidden" name="amount" value="30" />
+            <input type="hidden" name="currency" value="gbp" />
+        
+            <p></p>
+            <button type="submit" class="button">Book Appointment for £30</button>
+        </form>
+        
         </div>
       </div>
     </div>
